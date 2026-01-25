@@ -27,3 +27,9 @@ jobs:
       - run: chmod +x gradlew
       - run: ./gradlew build
       - run: ./gradlew bootBuildImage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 'test-results_${{ inputs.name-for-reports }}'
+          path: "**/build/reports/tests"
+          retention-days: 7
