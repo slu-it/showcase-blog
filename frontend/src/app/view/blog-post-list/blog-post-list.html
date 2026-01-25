@@ -1,0 +1,9 @@
+<div class="blog-post-list">
+  @for (post of blogPosts; track post._links.self.href) {
+    <div class="blog-post">
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.summary }}</p>
+      <p>{{ post.publicationTime | date:"long" }}</p>
+    </div>
+  }
+</div>

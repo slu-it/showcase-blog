@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {Home} from './home/home';
-import {HelloWorld} from './hello-world/hello-world';
+import {BlogPostList} from './view/blog-post-list/blog-post-list';
+import {BlogPostForm} from './edit/blog-post-form/blog-post-form';
 
 export const routes: Routes = [
   {
@@ -9,8 +10,13 @@ export const routes: Routes = [
     component: Home
   },
   {
-    path: 'hello-world',
-    title: 'Hello World',
-    component: HelloWorld
+    path: 'blog-posts',
+    title: 'Blog Posts',
+    component: BlogPostList
+  },
+  {
+    path: 'blog-post-form',
+    title: 'Create Blog Post',
+    component: BlogPostForm
   }
 ];
