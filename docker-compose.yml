@@ -22,6 +22,7 @@ services:
       - postgres
   frontend:
     build: ./frontend
+    pull_policy: build
     depends_on:
       - auth-server
       - backend
