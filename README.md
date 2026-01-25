@@ -1,4 +1,4 @@
-# untitled-showcase
+# showcase-blog
 
 A multi-service showcase project demonstrating OAuth2/OIDC authentication with Spring Authorization Server, a Spring Boot backend, an Angular frontend, Redis session caching, and oauth2-proxy for centralized authentication.
 
