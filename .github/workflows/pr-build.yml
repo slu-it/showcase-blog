@@ -1,0 +1,24 @@
+name: pr-build
+run-name: "PR Build #${{ github.event.pull_request.number }}"
+
+on:
+  pull_request:
+    branches: [ master ]
+
+concurrency:
+  group: pr_${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  auth-server:
+    uses: ./.github/workflows/wf-build-spring-boot.yml
+    with:
+      working-directory: 'auth-server'
+  backend:
+    uses: ./.github/workflows/wf-build-spring-boot.yml
+    with:
+      working-directory: 'backend'
+  frontend:
+    uses: ./.github/workflows/wf-build-angular.yml
+    with:
+      working-directory: 'frontend'

@@ -1,0 +1,29 @@
+server:
+  port: 9000
+
+spring:
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: ${ISSUER}
+        client:
+          oauth2-proxy-client:
+            token:
+              accessTokenTimeToLive: ${TTL_ACCESS_TOKEN}
+              refreshTokenTimeToLive: ${TTL_REFRESH_TOKEN}
+            registration:
+              client-name: "OAuth2 Proxy"
+              client-id: oauth2-proxy-client
+              client-secret: "{noop}${CLIENT_SECRET}"
+              client-authentication-methods:
+                - client_secret_basic
+              authorization-grant-types:
+                - authorization_code
+                - refresh_token
+              redirect-uris:
+                - ${REDIRECT_URI}
+              scopes:
+                - openid
+                - email
+                - profile
+

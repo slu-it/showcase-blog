@@ -1,0 +1,16 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+
+server:
+  port: 8080
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${ISSUER}
+          jwk-set-uri: ${JWKS_URI}

@@ -1,0 +1,7 @@
+<br/>
+<form data-testid="form" [formGroup]="form" (ngSubmit)="handleSubmit()">
+  <input data-testid="name-input" type="text" formControlName="name" />
+  <button data-testid="submit-button" type="submit" [disabled]="!form.valid">Submit</button>
+</form>
+<br/>
+<div data-testid="message">Message: {{ message }}</div>

@@ -1,0 +1,25 @@
+name: master-build
+run-name: "Master Build"
+
+on:
+  push:
+    branches: [ master ]
+
+concurrency:
+  group: master-build
+  cancel-in-progress: false
+
+jobs:
+  auth-server:
+    uses: ./.github/workflows/wf-build-spring-boot.yml
+    with:
+      working-directory: 'auth-server'
+  backend:
+    uses: ./.github/workflows/wf-build-spring-boot.yml
+    with:
+      working-directory: 'backend'
+  frontend:
+    uses: ./.github/workflows/wf-build-angular.yml
+    with:
+      working-directory: 'frontend'
+

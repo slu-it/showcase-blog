@@ -1,0 +1,6 @@
+# Only specify rules you want to override
+# Everything else uses Detekt defaults
+
+style:
+  MaxLineLength:
+    maxLineLength: 120
