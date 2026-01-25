@@ -44,7 +44,7 @@ tasks {
 tasks {
     bootBuildImage {
         imageName = buildString {
-            append("untitled-showcase/")
+            append("showcase-blog/")
             append(project.name)
             append(":")
             when (project.version) {

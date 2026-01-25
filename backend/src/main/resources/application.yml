@@ -8,9 +8,15 @@ server:
   port: 8080
 
 spring:
+  jackson:
+    default-property-inclusion: non_null
+  datasource:
+    username: dummy
+    password: dummy
+    url: jdbc:postgresql://localhost:5432/backend
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${ISSUER}
-          jwk-set-uri: ${JWKS_URI}
+          issuer-uri: ${ISSUER:dummy-issuer}
+          jwk-set-uri: ${JWKS_URI:https://localhost/dummy-issuer/JWKS}

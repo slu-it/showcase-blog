@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy.STATELESS
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
@@ -41,12 +42,14 @@ class SecurityConfiguration {
 
 object CustomJwtAuthenticationConverter : Converter<Jwt, JwtAuthenticationToken> {
     override fun convert(source: Jwt): JwtAuthenticationToken {
-        val authorities = source.getClaimAsStringList("authorities") ?: emptyList()
+        return JwtAuthenticationToken(source, CustomJwtGrantedAuthoritiesConverter.convert(source))
+    }
+}
 
-        val grantedAuthorities = authorities
-            .map(::SimpleGrantedAuthority)
-            .toSet()
-
-        return JwtAuthenticationToken(source, grantedAuthorities)
+object CustomJwtGrantedAuthoritiesConverter : Converter<Jwt, Collection<GrantedAuthority>> {
+    override fun convert(source: Jwt): Collection<GrantedAuthority> {
+        val authorities = source.getClaimAsStringList("authorities")
+            ?: emptyList()
+        return authorities.map(::SimpleGrantedAuthority).toSet()
     }
 }

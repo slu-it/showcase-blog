@@ -1,6 +1,6 @@
 services:
   auth-server:
-    image: untitled-showcase/auth-server:latest
+    image: showcase-blog/auth-server:latest
     ports:
       - "9000:9000"
     environment:
@@ -10,12 +10,16 @@ services:
       - TTL_ACCESS_TOKEN=10m
       - TTL_REFRESH_TOKEN=8h
   backend:
-    image: untitled-showcase/backend:latest
+    image: showcase-blog/backend:latest
     environment:
       - ISSUER=http://auth-server:9000
       - JWKS_URI=http://auth-server:9000/oauth2/jwks
+      - SPRING_DATASOURCE_USERNAME=backend
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend
     depends_on:
       - auth-server
+      - postgres
   frontend:
     build: ./frontend
     depends_on:
@@ -54,3 +58,16 @@ services:
     image: redis:7-alpine
     ports:
       - "6379:6379"
+  postgres:
+    image: postgres:17-alpine
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_DB=backend
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

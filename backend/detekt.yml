@@ -1,6 +1,10 @@
 # Only specify rules you want to override
 # Everything else uses Detekt defaults
 
+formatting:
+  Filename:
+    active: false
+
 style:
   MaxLineLength:
     maxLineLength: 120
