@@ -7,7 +7,7 @@ import {BlogPostsPage} from '../../model/blog-post.model';
   providedIn: 'root',
 })
 export class BlogPostListService {
-  private readonly apiUrl = '/api/viewer/blog-posts';
+  private readonly apiUrl = '/api/blog-posts';
 
   constructor(private http: HttpClient) {
   }
