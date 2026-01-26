@@ -2,28 +2,36 @@ package application.api
 
 import application.business.CreateBlogPostFunction
 import application.business.DeleteBlogPostFunction
+import application.business.GetBlogPostFunction
+import application.business.GetBlogPostsFunction
+import application.business.PageQuery
 import application.business.UpdateBlogPostFunction
+import org.springframework.hateoas.PagedModel
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import org.springframework.web.bind.annotation.DeleteMapping
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import java.time.Clock
 import java.util.UUID
 
 @RestController
-@RequestMapping("/api/editor/blog-posts")
-class BlogPostEditorController(
+@RequestMapping("/api/blog-posts")
+class BlogPostController(
     private val createBlogPost: CreateBlogPostFunction,
     private val updateBlogPost: UpdateBlogPostFunction,
     private val deleteBlogPost: DeleteBlogPostFunction,
+    private val getBlogPost: GetBlogPostFunction,
+    private val getBlogPosts: GetBlogPostsFunction,
     private val clock: Clock
 ) {
 
@@ -57,5 +65,27 @@ class BlogPostEditorController(
         @PathVariable("uid") uid: UUID
     ) {
         deleteBlogPost(user(auth), uid)
+    }
+
+    @GetMapping("/{uid}")
+    fun get(
+        auth: JwtAuthenticationToken,
+        @PathVariable("uid") uid: UUID
+    ): ResponseEntity<BlogPostRepresentation> {
+        val blogPost = getBlogPost(user(auth), uid)
+        return when (blogPost) {
+            null -> ResponseEntity.notFound().build()
+            else -> ResponseEntity.ok(representation(blogPost))
+        }
+    }
+
+    @GetMapping
+    fun getPage(
+        auth: JwtAuthenticationToken,
+        @RequestParam("pageNumber") pageNumber: Int,
+        @RequestParam("pageSize", defaultValue = "25") pageSize: Int,
+    ): PagedModel<BlogPostRepresentation> {
+        val page = getBlogPosts(user(auth), PageQuery(pageNumber, pageSize))
+        return representations(page)
     }
 }

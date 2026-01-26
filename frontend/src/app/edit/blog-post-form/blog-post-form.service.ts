@@ -7,7 +7,7 @@ import {BlogPost, CreateBlogPostRequest} from '../../model/blog-post.model';
   providedIn: 'root',
 })
 export class BlogPostFormService {
-  private readonly apiUrl = '/api/editor/blog-posts';
+  private readonly apiUrl = '/api/blog-posts';
 
   constructor(private http: HttpClient) {
   }

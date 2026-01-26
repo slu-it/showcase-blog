@@ -35,9 +35,9 @@ fun representation(blogPost: BlogPost, includeContent: Boolean = true) =
         content = blogPost.data.content.takeIf { includeContent },
         publicationTime = blogPost.data.publicationTime,
     ).apply {
-        add(Link.of("/api/viewer/blog-posts/${blogPost.uid}", "self"))
-        add(Link.of("/api/editor/blog-posts/${blogPost.uid}", "patch"))
-        add(Link.of("/api/editor/blog-posts/${blogPost.uid}", "delete"))
+        add(Link.of("/api/blog-posts/${blogPost.uid}", "self"))
+        add(Link.of("/api/blog-posts/${blogPost.uid}", "patch"))
+        add(Link.of("/api/blog-posts/${blogPost.uid}", "delete"))
     }
 
 // TODO maybe this deserves its own model that makes it clear from database to controller, that the content
