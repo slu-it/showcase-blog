@@ -1,0 +1,50 @@
+<form data-testid="form" [formGroup]="form" (ngSubmit)="handleSubmit()">
+
+  <div class="form-field">
+    <label for="title">
+      {{ 'editor.title' | translate }}
+      @if (isRequired(form.controls.title)) {
+        <span class="required-marker">*</span>
+      }
+    </label>
+    <input data-testid="title-input" id="title" type="text" formControlName="title"
+           [class.invalid]="form.controls.title.invalid"/>
+  </div>
+
+  <div class="form-field">
+    <label for="summary">
+      {{ 'editor.summary' | translate }}
+      @if (isRequired(form.controls.summary)) {
+        <span class="required-marker">*</span>
+      }
+    </label>
+    <textarea data-testid="summary-input" id="summary" formControlName="summary" rows="4"
+              [class.invalid]="form.controls.summary.invalid"></textarea>
+  </div>
+
+  <div class="form-field">
+    <label for="content">
+      {{ 'editor.content' | translate }}
+      @if (isRequired(form.controls.content)) {
+        <span class="required-marker">*</span>
+      }
+    </label>
+    <textarea data-testid="content-input" id="content" formControlName="content" rows="25"
+              [class.invalid]="form.controls.content.invalid"></textarea>
+  </div>
+
+  <div class="form-field">
+    <label
+      for="publicationTime">
+      {{ 'editor.publicationTime' | translate }}
+      @if (isRequired(form.controls.publicationTime)) {
+        <span class="required-marker">*</span>
+      }
+    </label>
+    <input data-testid="publication-time-input" id="publicationTime" type="datetime-local"
+           formControlName="publicationTime" [class.invalid]="form.controls.publicationTime.invalid"/>
+  </div>
+
+  <button data-testid="submit-button" type="submit" [disabled]="!form.valid">{{ 'editor.submit' | translate }}</button>
+
+</form>

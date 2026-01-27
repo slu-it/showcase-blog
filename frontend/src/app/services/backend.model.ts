@@ -32,9 +32,9 @@ export interface PageInfo {
 
 // editor
 
-export interface CreateBlogPostRequest {
+export interface BlogPostDto {
   title: string;
   summary?: string;
   content?: string;
-  publicationTime?: string;
+  publicationTime: string;
 }

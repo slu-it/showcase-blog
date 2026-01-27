@@ -1,0 +1,30 @@
+{
+  "pageTitle": {
+    "blogPosts": "Publicaciones",
+    "createBlogPost": "Crear publicación"
+  },
+  "nav": {
+    "blogPosts": "Publicaciones",
+    "create": "Crear"
+  },
+  "editor": {
+    "title": "Título",
+    "summary": "Resumen",
+    "content": "Contenido",
+    "publicationTime": "Fecha de publicación",
+    "submit": "Enviar"
+  },
+  "creator": {
+    "message": "Mensaje",
+    "creating": "creando ...",
+    "success": "¡Creado con éxito!",
+    "error": "Error"
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "🇬🇧 Inglés",
+    "de": "🇩🇪 Alemán",
+    "es": "🇪🇸 Español",
+    "sv": "🇸🇪 Sueco"
+  }
+}

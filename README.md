@@ -38,16 +38,27 @@ cd backend
 
 ### 2. Start the Applications
 
+#### 2.1 "Frontend Development" Mode
+
+Once the Docker images are built, start all services except the using Docker Compose:
+
+```bash
+docker-compose -f docker-compose-frontend-dev.yml up
+```
+
+That Docker Compose setup will expect to reach a running frontend on the host using port `4200`.
+Since the proxy will be forwarding to that, we need to serve the frontend on the whole host:
+
+```bash
+ng serve --host 0.0.0.0
+```
+
+#### 2.2 "Just start everything" Mode
+
 Once the Docker images are built, start all services using Docker Compose:
 
 ```bash
-docker-compose up
-```
-
-Or run in detached mode:
-
-```bash
-docker-compose up -d
+docker-compose -f docker-compose.yml up
 ```
 
 ### 3. Access the Application

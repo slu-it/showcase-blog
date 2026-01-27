@@ -1,0 +1,30 @@
+{
+  "pageTitle": {
+    "blogPosts": "Blogbeiträge",
+    "createBlogPost": "Blogbeitrag erstellen"
+  },
+  "nav": {
+    "blogPosts": "Blogbeiträge",
+    "create": "Erstellen"
+  },
+  "editor": {
+    "title": "Titel",
+    "summary": "Zusammenfassung",
+    "content": "Inhalt",
+    "publicationTime": "Veröffentlichungszeitpunkt",
+    "submit": "Absenden"
+  },
+  "creator": {
+    "message": "Nachricht",
+    "creating": "wird erstellt ...",
+    "success": "Erfolgreich erstellt!",
+    "error": "Fehler"
+  },
+  "language": {
+    "label": "Sprache",
+    "en": "🇬🇧 Englisch",
+    "de": "🇩🇪 Deutsch",
+    "es": "🇪🇸 Spanisch",
+    "sv": "🇸🇪 Schwedisch"
+  }
+}
