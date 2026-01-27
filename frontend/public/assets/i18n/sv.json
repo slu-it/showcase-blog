@@ -1,0 +1,30 @@
+{
+  "pageTitle": {
+    "blogPosts": "Blogginlägg",
+    "createBlogPost": "Skapa blogginlägg"
+  },
+  "nav": {
+    "blogPosts": "Blogginlägg",
+    "create": "Skapa"
+  },
+  "editor": {
+    "title": "Titel",
+    "summary": "Sammanfattning",
+    "content": "Innehåll",
+    "publicationTime": "Publiceringstid",
+    "submit": "Skicka"
+  },
+  "creator": {
+    "message": "Meddelande",
+    "creating": "skapar ...",
+    "success": "Skapades framgångsrikt!",
+    "error": "Fel"
+  },
+  "language": {
+    "label": "Språk",
+    "en": "🇬🇧 Engelska",
+    "de": "🇩🇪 Tyska",
+    "es": "🇪🇸 Spanska",
+    "sv": "🇸🇪 Svenska"
+  }
+}

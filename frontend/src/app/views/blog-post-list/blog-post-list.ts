@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {BlogPostListService} from './blog-post-list.service';
-import {BlogPost} from '../../model/blog-post.model';
+import {BlogPost} from '../../services/backend.model';
 import {DatePipe} from '@angular/common';
+import {BackendService} from '../../services/backend.service';
 
 @Component({
   selector: 'app-blog-post-list',
@@ -12,7 +12,7 @@ import {DatePipe} from '@angular/common';
   ]
 })
 export class BlogPostList implements OnInit {
-  private service = inject(BlogPostListService);
+  private service = inject(BackendService);
   blogPosts: BlogPost[] = [];
 
   ngOnInit(): void {

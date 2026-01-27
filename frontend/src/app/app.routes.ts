@@ -1,22 +1,16 @@
 import {Routes} from '@angular/router';
-import {Home} from './home/home';
-import {BlogPostList} from './view/blog-post-list/blog-post-list';
-import {BlogPostForm} from './edit/blog-post-form/blog-post-form';
+import {BlogPostList} from './views/blog-post-list/blog-post-list';
+import {BlogPostCreator} from './views/blog-post-creator/blog-post-creator';
 
 export const routes: Routes = [
   {
     path: '',
-    title: 'Home',
-    component: Home
-  },
-  {
-    path: 'blog-posts',
-    title: 'Blog Posts',
+    title: 'pageTitle.blogPosts',
     component: BlogPostList
   },
   {
-    path: 'blog-post-form',
-    title: 'Create Blog Post',
-    component: BlogPostForm
+    path: 'create',
+    title: 'pageTitle.createBlogPost',
+    component: BlogPostCreator
   }
 ];

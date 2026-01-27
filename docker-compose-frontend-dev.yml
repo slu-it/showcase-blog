@@ -1,0 +1,71 @@
+services:
+  auth-server:
+    image: showcase-blog/auth-server:latest
+    ports:
+      - "9000:9000"
+    environment:
+      - CLIENT_SECRET=dummy-secret
+      - ISSUER=http://auth-server:9000
+      - REDIRECT_URI=http://localhost:4180/oauth2/callback
+      - TTL_ACCESS_TOKEN=10m
+      - TTL_REFRESH_TOKEN=8h
+  backend:
+    image: showcase-blog/backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - ISSUER=http://auth-server:9000
+      - JWKS_URI=http://auth-server:9000/oauth2/jwks
+      - SPRING_DATASOURCE_USERNAME=backend
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend
+    depends_on:
+      - auth-server
+      - postgres
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.10.0
+    hostname: oauth2-proxy
+    restart: unless-stopped
+    ports:
+      - "4180:4180/tcp"
+    environment:
+      - OAUTH2_PROXY_CLIENT_ID=oauth2-proxy-client
+      - OAUTH2_PROXY_CLIENT_SECRET=dummy-secret
+      - OAUTH2_PROXY_COOKIE_EXPIRE=8h
+      - OAUTH2_PROXY_COOKIE_REFRESH=9m
+      - OAUTH2_PROXY_COOKIE_SECRET=a57b6cc1dfc7bc782c2d73debf11ddc7
+      - OAUTH2_PROXY_COOKIE_SECURE=false
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+      - OAUTH2_PROXY_HTTP_ADDRESS=0.0.0.0:4180
+      - OAUTH2_PROXY_OIDC_EMAIL_CLAIM=email
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=http://auth-server:9000
+      - OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER=true
+      - OAUTH2_PROXY_PROVIDER=oidc
+      - OAUTH2_PROXY_REDIRECT_URL=http://localhost:4180/oauth2/callback
+      - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://redis:6379
+      - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
+      - OAUTH2_PROXY_UPSTREAMS=http://backend:8080/api/,http://host.docker.internal:4200/
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - auth-server
+      - backend
+      - redis
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+  postgres:
+    image: postgres:17-alpine
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_DB=backend
+      - POSTGRES_USER=backend
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
