@@ -25,6 +25,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.json.JsonCompareMode.STRICT
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
 import org.springframework.test.web.servlet.get
@@ -47,7 +48,7 @@ import java.util.UUID
         Clock::class
     ]
 )
-@Suppress("LongParameterList")
+@Suppress("LongParameterList", "LongMethod")
 class BlogPostControllerTests(
     @Autowired private val mockMvc: MockMvc,
     @Autowired private val createBlogPost: CreateBlogPostFunction,
@@ -109,6 +110,7 @@ class BlogPostControllerTests(
                 json(
                     """
                     {
+                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                         "title": "Database Indexing Best Practices",
                         "summary": "How to optimize your PostgreSQL queries with proper indexing",
                         "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
@@ -119,7 +121,8 @@ class BlogPostControllerTests(
                             "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
                         }
                     }
-                    """
+                    """,
+                    compareMode = STRICT
                 )
             }
         }
@@ -143,6 +146,7 @@ class BlogPostControllerTests(
                 json(
                     """
                     {
+                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                         "title": "Updated Title",
                         "summary": "How to optimize your PostgreSQL queries with proper indexing",
                         "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
@@ -153,7 +157,8 @@ class BlogPostControllerTests(
                             "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
                         }
                     }
-                    """
+                    """,
+                    compareMode = STRICT
                 )
             }
         }
@@ -185,6 +190,7 @@ class BlogPostControllerTests(
                 json(
                     """
                     {
+                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                         "title": "Database Indexing Best Practices",
                         "summary": "How to optimize your PostgreSQL queries with proper indexing",
                         "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
@@ -195,7 +201,8 @@ class BlogPostControllerTests(
                             "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
                         }
                     }
-                    """
+                    """,
+                    compareMode = STRICT
                 )
             }
         }
@@ -228,6 +235,7 @@ class BlogPostControllerTests(
                         "_embedded": {
                             "blogPosts": [
                                 {
+                                    "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                                     "title": "Database Indexing Best Practices",
                                     "summary": "How to optimize your PostgreSQL queries with proper indexing",
                                     "publicationTime": "2025-12-01T09:00:00Z",
@@ -238,6 +246,7 @@ class BlogPostControllerTests(
                                     }
                                 },
                                 {
+                                    "uid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
                                     "title": "Getting Started with Kotlin Coroutines",
                                     "summary": "A beginner's guide to asynchronous programming in Kotlin",
                                     "publicationTime": "2024-03-15T10:00:00Z",
@@ -256,7 +265,8 @@ class BlogPostControllerTests(
                             "number": 1
                         }
                     }
-                    """
+                    """,
+                    compareMode = STRICT
                 )
             }
         }

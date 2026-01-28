@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import tools.jackson.databind.JsonNode
 import java.time.Clock
 import java.util.UUID
 
@@ -48,8 +49,8 @@ class BlogPostController(
     @PatchMapping("/{uid}")
     fun patch(
         auth: JwtAuthenticationToken,
-        @PathVariable("uid") uid: UUID,
-        @RequestBody data: PatchData
+        @PathVariable uid: UUID,
+        @RequestBody data: JsonNode
     ): ResponseEntity<BlogPostRepresentation> {
         val blogPost = updateBlogPost(user(auth), uid) { post -> patch(post, data) }
         return when (blogPost) {
@@ -62,7 +63,7 @@ class BlogPostController(
     @ResponseStatus(NO_CONTENT)
     fun delete(
         auth: JwtAuthenticationToken,
-        @PathVariable("uid") uid: UUID
+        @PathVariable uid: UUID
     ) {
         deleteBlogPost(user(auth), uid)
     }
@@ -70,7 +71,7 @@ class BlogPostController(
     @GetMapping("/{uid}")
     fun get(
         auth: JwtAuthenticationToken,
-        @PathVariable("uid") uid: UUID
+        @PathVariable uid: UUID
     ): ResponseEntity<BlogPostRepresentation> {
         val blogPost = getBlogPost(user(auth), uid)
         return when (blogPost) {

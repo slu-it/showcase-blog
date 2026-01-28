@@ -9,7 +9,10 @@ import org.springframework.hateoas.Link
 import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.PagedModel.PageMetadata
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
+import tools.jackson.databind.JsonNode
 import java.time.Clock
+import java.time.Instant
+import kotlin.jvm.optionals.getOrNull
 
 fun user(authentication: JwtAuthenticationToken): CurrentUser = CurrentUser(uid = authentication.name)
 
@@ -21,15 +24,33 @@ fun blogPostData(data: CreationData, clock: Clock): BlogPostData =
         publicationTime = data.publicationTime ?: clock.instant(),
     )
 
-fun patch(post: MutableBlogPost, data: PatchData) {
-    if (data.title != null) post.data.title = data.title
-    if (data.summary != null) post.data.summary = data.summary
-    if (data.content != null) post.data.content = data.content
-    if (data.publicationTime != null) post.data.publicationTime = data.publicationTime
+fun patch(post: MutableBlogPost, data: JsonNode) {
+    ifPresent(data, "title") {
+        post.data.title = it.stringValueOpt().getOrNull()
+            ?.takeUnless { it.isBlank() }
+            ?: error("Can't remove 'title' from blog post!")
+    }
+    ifPresent(data, "summary") {
+        post.data.summary = it.stringValueOpt().orElse("")
+    }
+    ifPresent(data, "content") {
+        post.data.content = it.stringValueOpt().orElse("")
+    }
+    ifPresent(data, "publicationTime") {
+        post.data.publicationTime = it.stringValueOpt().getOrNull()
+            ?.takeUnless { it.isBlank() }
+            ?.let(Instant::parse)
+            ?: error("Can't remove 'publicationTime' from blog post!")
+    }
+}
+
+private fun ifPresent(source: JsonNode, key: String, block: (JsonNode) -> Unit) {
+    if (source.has(key)) block(source.get(key))
 }
 
 fun representation(blogPost: BlogPost, includeContent: Boolean = true) =
     BlogPostRepresentation(
+        uid = blogPost.uid,
         title = blogPost.data.title,
         summary = blogPost.data.summary,
         content = blogPost.data.content.takeIf { includeContent },

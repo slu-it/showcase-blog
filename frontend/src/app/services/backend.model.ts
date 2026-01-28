@@ -1,4 +1,5 @@
 export interface BlogPost {
+  uid: string;
   title: string;
   summary: string;
   content?: string;
@@ -37,4 +38,11 @@ export interface BlogPostDto {
   summary?: string;
   content?: string;
   publicationTime: string;
+}
+
+export interface BlogPostUpdateDto {
+  title?: string;
+  summary?: string | null;
+  content?: string | null;
+  publicationTime?: string;
 }

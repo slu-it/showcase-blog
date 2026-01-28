@@ -2,16 +2,18 @@ import {Component, inject, OnInit} from '@angular/core';
 import {BlogPost} from '../../services/backend.model';
 import {DatePipe} from '@angular/common';
 import {BackendService} from '../../services/backend.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-blog-post-list',
-  templateUrl: './blog-post-list.html',
-  styleUrl: './blog-post-list.scss',
+  selector: 'app-blog-post-list-view',
+  templateUrl: './blog-post-list.view.html',
+  styleUrl: './blog-post-list.view.scss',
   imports: [
-    DatePipe
+    DatePipe,
+    RouterLink
   ]
 })
-export class BlogPostList implements OnInit {
+export class BlogPostListView implements OnInit {
   private service = inject(BackendService);
   blogPosts: BlogPost[] = [];
 

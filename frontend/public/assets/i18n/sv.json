@@ -1,7 +1,8 @@
 {
   "pageTitle": {
     "blogPosts": "Blogginlägg",
-    "createBlogPost": "Skapa blogginlägg"
+    "createBlogPost": "Skapa blogginlägg",
+    "editBlogPost": "Blogginläggsredigerare"
   },
   "nav": {
     "blogPosts": "Blogginlägg",
@@ -26,5 +27,12 @@
     "de": "🇩🇪 Tyska",
     "es": "🇪🇸 Spanska",
     "sv": "🇸🇪 Svenska"
+  },
+  "errors": {
+    "responses": {
+      "forbidden": "403 Förbjuden",
+      "notFound": "404 Hittades Inte",
+      "oops": "Hoppsan, något gick fruktansvärt fel!"
+    }
   }
 }

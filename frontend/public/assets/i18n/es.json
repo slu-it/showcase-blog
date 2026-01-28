@@ -1,7 +1,8 @@
 {
   "pageTitle": {
     "blogPosts": "Publicaciones",
-    "createBlogPost": "Crear publicación"
+    "createBlogPost": "Crear publicación",
+    "editBlogPost": "Editor de publicación"
   },
   "nav": {
     "blogPosts": "Publicaciones",
@@ -26,5 +27,12 @@
     "de": "🇩🇪 Alemán",
     "es": "🇪🇸 Español",
     "sv": "🇸🇪 Sueco"
+  },
+  "errors": {
+    "responses": {
+      "forbidden": "403 Prohibido",
+      "notFound": "404 No Encontrado",
+      "oops": "¡Vaya, algo salió terriblemente mal!"
+    }
   }
 }
