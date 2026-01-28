@@ -1,7 +1,8 @@
 {
   "pageTitle": {
     "blogPosts": "Blogbeiträge",
-    "createBlogPost": "Blogbeitrag erstellen"
+    "createBlogPost": "Blogbeitrag erstellen",
+    "editBlogPost": "Blogbeitrag-Editor"
   },
   "nav": {
     "blogPosts": "Blogbeiträge",
@@ -26,5 +27,12 @@
     "de": "🇩🇪 Deutsch",
     "es": "🇪🇸 Spanisch",
     "sv": "🇸🇪 Schwedisch"
+  },
+  "errors": {
+    "responses": {
+      "forbidden": "403 Verboten",
+      "notFound": "404 Nicht Gefunden",
+      "oops": "Hoppla, da ist etwas gehörig schiefgelaufen!"
+    }
   }
 }

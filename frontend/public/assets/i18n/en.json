@@ -1,7 +1,8 @@
 {
   "pageTitle": {
     "blogPosts": "Blog Posts",
-    "createBlogPost": "Create Blog Post"
+    "createBlogPost": "Create Blog Post",
+    "editBlogPost": "Blog Post Editor"
   },
   "nav": {
     "blogPosts": "Blog Posts",
@@ -26,5 +27,12 @@
     "de": "🇩🇪 German",
     "es": "🇪🇸 Spanish",
     "sv": "🇸🇪 Swedish"
+  },
+  "errors": {
+    "responses": {
+      "forbidden": "403 Forbidden",
+      "notFound": "404 Not Found",
+      "oops": "Oops, something went terribly wrong!"
+    }
   }
 }
