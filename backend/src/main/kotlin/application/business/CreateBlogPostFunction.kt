@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 class CreateBlogPostFunction(
     private val repository: BlogPostCrudRepository
 ) {
-    operator fun invoke(user: CurrentUser, data: BlogPostData): BlogPost {
+    operator fun invoke(user: User, data: BlogPostData): BlogPost {
         // TODO
         //  - check if user can create a blog post
         //  - user can create if they are an author

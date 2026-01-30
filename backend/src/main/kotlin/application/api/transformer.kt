@@ -2,9 +2,12 @@ package application.api
 
 import application.business.BlogPost
 import application.business.BlogPostData
-import application.business.CurrentUser
 import application.business.MutableBlogPost
 import application.business.PagedResult
+import application.business.User
+import application.config.isAdmin
+import application.config.isAuthor
+import application.config.isUser
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.PagedModel.PageMetadata
@@ -14,7 +17,13 @@ import java.time.Clock
 import java.time.Instant
 import kotlin.jvm.optionals.getOrNull
 
-fun user(authentication: JwtAuthenticationToken): CurrentUser = CurrentUser(uid = authentication.name)
+fun user(authentication: JwtAuthenticationToken): User =
+    User(
+        uid = authentication.name,
+        isUser = isUser(authentication),
+        isAuthor = isAuthor(authentication),
+        isAdmin = isAdmin(authentication),
+    )
 
 fun blogPostData(data: CreationData, clock: Clock): BlogPostData =
     BlogPostData(
@@ -48,7 +57,7 @@ private fun ifPresent(source: JsonNode, key: String, block: (JsonNode) -> Unit) 
     if (source.has(key)) block(source.get(key))
 }
 
-fun representation(blogPost: BlogPost, includeContent: Boolean = true) =
+fun representation(blogPost: BlogPost, user: User, includeContent: Boolean = true) =
     BlogPostRepresentation(
         uid = blogPost.uid,
         title = blogPost.data.title,
@@ -57,15 +66,17 @@ fun representation(blogPost: BlogPost, includeContent: Boolean = true) =
         publicationTime = blogPost.data.publicationTime,
     ).apply {
         add(Link.of("/api/blog-posts/${blogPost.uid}", "self"))
-        add(Link.of("/api/blog-posts/${blogPost.uid}", "patch"))
-        add(Link.of("/api/blog-posts/${blogPost.uid}", "delete"))
+        if (user.isAuthor) {
+            add(Link.of("/api/blog-posts/${blogPost.uid}", "patch"))
+            add(Link.of("/api/blog-posts/${blogPost.uid}", "delete"))
+        }
     }
 
 // TODO maybe this deserves its own model that makes it clear from database to controller, that the content
 //  is not loaded?
-fun representations(page: PagedResult<BlogPost>): PagedModel<BlogPostRepresentation> =
+fun representations(page: PagedResult<BlogPost>, user: User): PagedModel<BlogPostRepresentation> =
     PagedModel.of(
-        page.content.map { representation(it, includeContent = false) },
+        page.content.map { representation(it, user, includeContent = false) },
         PageMetadata(
             page.page.size.toLong(),
             page.page.number.toLong(),

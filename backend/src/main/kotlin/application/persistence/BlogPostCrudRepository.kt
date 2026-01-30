@@ -2,8 +2,8 @@ package application.persistence
 
 import application.business.BlogPost
 import application.business.BlogPostData
-import application.business.CurrentUser
 import application.business.MutableBlogPost
+import application.business.User
 import org.springframework.jdbc.core.simple.JdbcClient
 import org.springframework.stereotype.Repository
 import org.springframework.util.IdGenerator
@@ -42,7 +42,7 @@ class BlogPostCrudRepository(
 
     private val findByIdQuery = "SELECT * FROM blog_posts WHERE uid = :uid"
 
-    fun create(user: CurrentUser, data: BlogPostData): BlogPost {
+    fun create(user: User, data: BlogPostData): BlogPost {
         val uid = idGenerator.generateId()
 
         client.sql(creationStatement)
@@ -69,10 +69,10 @@ class BlogPostCrudRepository(
             .optional()
             .getOrNull()
 
-    fun updateByIdOrThrow(user: CurrentUser, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost =
+    fun updateByIdOrThrow(user: User, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost =
         updateById(user, uid, update) ?: error("BlogPost with id $uid not found!")
 
-    fun updateById(user: CurrentUser, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost? {
+    fun updateById(user: User, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost? {
         val current = findById(uid) ?: return null
         val mutable = MutableBlogPost.from(current)
         update(mutable)

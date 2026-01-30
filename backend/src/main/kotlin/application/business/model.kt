@@ -5,8 +5,11 @@ package application.business
 import java.time.Instant
 import java.util.UUID
 
-data class CurrentUser(
+data class User(
     val uid: String,
+    val isUser: Boolean,
+    val isAuthor: Boolean,
+    val isAdmin: Boolean,
 )
 
 data class BlogPost(

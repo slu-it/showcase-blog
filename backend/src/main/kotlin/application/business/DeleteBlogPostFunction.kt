@@ -8,7 +8,7 @@ import java.util.UUID
 class DeleteBlogPostFunction(
     private val repository: BlogPostCrudRepository
 ) {
-    operator fun invoke(user: CurrentUser, uid: UUID) {
+    operator fun invoke(user: User, uid: UUID) {
         // TODO
         //  - load blog post authorship data
         //  - check if user can delete the blog post

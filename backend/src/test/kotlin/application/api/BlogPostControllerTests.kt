@@ -18,6 +18,7 @@ import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
 import io.mockk.verify
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
@@ -25,6 +26,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.json.JsonCompareMode.LENIENT
 import org.springframework.test.json.JsonCompareMode.STRICT
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
@@ -85,132 +87,238 @@ class BlogPostControllerTests(
         )
     )
 
-    @Test
-    fun `POST creates a blog post and returns 201 with representation`() {
-        every { clock.instant() } returns now
-        every { createBlogPost(any(), any()) } returns blogPost1
+    @Nested
+    inner class PostBlogPost {
 
-        mockMvc.post("/api/blog-posts") {
-            with(jwtWithUserRole())
-            contentType = APPLICATION_JSON
-            content = jsonValue(
-                """
-                {
-                    "title": "Database Indexing Best Practices",
-                    "summary": "How to optimize your PostgreSQL queries with proper indexing",
-                    "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
-                    "publicationTime": "2025-12-01T09:00:00Z"
+        @Test
+        fun `POST on blog posts as a user returns 403`() {
+            mockMvc.post("/api/blog-posts") {
+                with(jwtWithUserRole())
+                contentType = APPLICATION_JSON
+                content = jsonValue(
+                    """
+                    {
+                        "title": "Database Indexing Best Practices",
+                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                        "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
+                        "publicationTime": "2025-12-01T09:00:00Z"
+                    }
+                    """
+                )
+            }.andExpect {
+                status { isForbidden() }
+            }
+        }
+
+        @Test
+        fun `POST on blog posts as an author creates a new blog post and returns 201 with representation`() {
+            every { clock.instant() } returns now
+            every { createBlogPost(any(), any()) } returns blogPost1
+
+            mockMvc.post("/api/blog-posts") {
+                with(jwtWithAuthorRole())
+                contentType = APPLICATION_JSON
+                content = jsonValue(
+                    """
+                    {
+                        "title": "Database Indexing Best Practices",
+                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                        "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
+                        "publicationTime": "2025-12-01T09:00:00Z"
+                    }
+                    """
+                )
+            }.andExpect {
+                status { isCreated() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                            "title": "Database Indexing Best Practices",
+                            "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                            "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
+                            "publicationTime": "2025-12-01T09:00:00Z",
+                            "_links": {
+                                "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                            }
+                        }
+                        """,
+                        compareMode = STRICT
+                    )
                 }
-                """
+            }
+        }
+    }
+
+    @Nested
+    inner class PatchBlogPost {
+
+        @Test
+        fun `PATCH on a blog post as a user returns 403`() {
+            mockMvc.patch("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithUserRole())
+                contentType = APPLICATION_JSON
+                content = jsonValue("""{ "title": "Updated Title" }""")
+            }.andExpect {
+                status { isForbidden() }
+            }
+        }
+
+        @Test
+        fun `PATCH on a blog post as an author returns 404 when not found`() {
+            every { updateBlogPost(any(), blogPostUid1, any()) } returns null
+
+            mockMvc.patch("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithAuthorRole())
+                contentType = APPLICATION_JSON
+                content = jsonValue("""{ "title": "Updated Title" }""")
+            }.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `PATCH on a blog post as an author returns 200 with updated blog post representation when found`() {
+            val updatedBlogPost = blogPost1.copy(
+                data = blogPostData1.copy(title = "Updated Title")
             )
-        }.andExpect {
-            status { isCreated() }
-            content {
-                contentType(HAL_JSON)
-                json(
-                    """
-                    {
-                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                        "title": "Database Indexing Best Practices",
-                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
-                        "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
-                        "publicationTime": "2025-12-01T09:00:00Z",
-                        "_links": {
-                            "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+            every { updateBlogPost(any(), blogPostUid1, any()) } returns updatedBlogPost
+
+            mockMvc.patch("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithAuthorRole())
+                contentType = APPLICATION_JSON
+                content = jsonValue("""{ "title": "Updated Title" }""")
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                            "title": "Updated Title",
+                            "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                            "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
+                            "publicationTime": "2025-12-01T09:00:00Z",
+                            "_links": {
+                                "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                            }
                         }
-                    }
-                    """,
-                    compareMode = STRICT
-                )
+                        """,
+                        compareMode = STRICT
+                    )
+                }
             }
         }
     }
 
-    @Test
-    fun `PATCH returns 200 with updated blog post representation when found`() {
-        val updatedBlogPost = blogPost1.copy(
-            data = blogPostData1.copy(title = "Updated Title")
-        )
-        every { updateBlogPost(any(), blogPostUid1, any()) } returns updatedBlogPost
+    @Nested
+    inner class DeleteBlogPost {
 
-        mockMvc.patch("/api/blog-posts/{uid}", blogPostUid1) {
-            with(jwtWithUserRole())
-            contentType = APPLICATION_JSON
-            content = jsonValue("""{ "title": "Updated Title" }""")
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(HAL_JSON)
-                json(
-                    """
-                    {
-                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                        "title": "Updated Title",
-                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
-                        "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
-                        "publicationTime": "2025-12-01T09:00:00Z",
-                        "_links": {
-                            "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+        @Test
+        fun `DELETE on a blog post as a user returns 403`() {
+            mockMvc.delete("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithUserRole())
+            }.andExpect {
+                status { isForbidden() }
+            }
+        }
+
+        @Test
+        fun `DELETE on a blog post as an author returns 204`() {
+            every { deleteBlogPost(any(), blogPostUid1) } just runs
+
+            mockMvc.delete("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithAuthorRole())
+            }.andExpect {
+                status { isNoContent() }
+            }
+
+            verify { deleteBlogPost(any(), blogPostUid1) }
+        }
+    }
+
+    @Nested
+    inner class GetBlogPost {
+
+        @Test
+        fun `GET on a blog post as a user returns 404 when not found`() {
+            every { getBlogPost(any(), blogPostUid1) } returns null
+
+            mockMvc.get("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithUserRole())
+            }.andExpect {
+                status { isNotFound() }
+            }
+        }
+
+        @Test
+        fun `GET on a blog post as a user returns 200 with blog post representation when found`() {
+            every { getBlogPost(any(), blogPostUid1) } returns blogPost1
+
+            mockMvc.get("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithUserRole())
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                            "title": "Database Indexing Best Practices",
+                            "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                            "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
+                            "publicationTime": "2025-12-01T09:00:00Z",
+                            "_links": {
+                                "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                            }
                         }
-                    }
-                    """,
-                    compareMode = STRICT
-                )
+                        """,
+                        compareMode = STRICT
+                    )
+                }
+            }
+        }
+
+        @Test
+        fun `GET on a blog post as an author returns 200 with extra links`() {
+            every { getBlogPost(any(), blogPostUid1) } returns blogPost1
+
+            mockMvc.get("/api/blog-posts/{uid}", blogPostUid1) {
+                with(jwtWithAuthorRole())
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                            "_links": {
+                                "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                            }
+                        }
+                        """,
+                        compareMode = LENIENT
+                    )
+                }
             }
         }
     }
 
-    @Test
-    fun `DELETE returns 204 when deleting a blog post`() {
-        every { deleteBlogPost(any(), blogPostUid1) } just runs
+    @Nested
+    inner class GetBlogPostsPage {
 
-        mockMvc.delete("/api/blog-posts/{uid}", blogPostUid1) {
-            with(jwtWithUserRole())
-        }.andExpect {
-            status { isNoContent() }
-        }
-
-        verify { deleteBlogPost(any(), blogPostUid1) }
-    }
-
-    @Test
-    fun `GET by UID returns 200 with blog post representation when found`() {
-        every { getBlogPost(any(), blogPostUid1) } returns blogPost1
-
-        mockMvc.get("/api/blog-posts/{uid}", blogPostUid1) {
-            with(jwtWithUserRole())
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(HAL_JSON)
-                json(
-                    """
-                    {
-                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                        "title": "Database Indexing Best Practices",
-                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
-                        "content": "Indexes are crucial for query performance but come with trade-offs for write operations...",
-                        "publicationTime": "2025-12-01T09:00:00Z",
-                        "_links": {
-                            "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                            "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
-                        }
-                    }
-                    """,
-                    compareMode = STRICT
-                )
-            }
-        }
-    }
-
-    @Test
-    fun `GET page returns 200 with paged blog post representations`() {
-        val pagedResult = PagedResult(
+        private val pagedResult = PagedResult(
             content = listOf(blogPost1, blogPost2),
             page = PagedResult.Page(
                 number = 1,
@@ -219,55 +327,98 @@ class BlogPostControllerTests(
                 totalPages = 1,
             )
         )
-        every { getBlogPosts(any(), PageQuery(1, 25)) } returns pagedResult
 
-        mockMvc.get("/api/blog-posts") {
-            with(jwtWithUserRole())
-            queryParam("pageNumber", "1")
-            queryParam("pageSize", "25")
-        }.andExpect {
-            status { isOk() }
-            content {
-                contentType(HAL_JSON)
-                json(
-                    """
-                    {
-                        "_embedded": {
-                            "blogPosts": [
-                                {
-                                    "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                                    "title": "Database Indexing Best Practices",
-                                    "summary": "How to optimize your PostgreSQL queries with proper indexing",
-                                    "publicationTime": "2025-12-01T09:00:00Z",
-                                    "_links": {
-                                        "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                                        "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
-                                        "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+        @Test
+        fun `GET on blog posts as a user returns 200 with paged blog post representations`() {
+            every { getBlogPosts(any(), PageQuery(1, 25)) } returns pagedResult
+
+            mockMvc.get("/api/blog-posts") {
+                with(jwtWithUserRole())
+                queryParam("pageNumber", "1")
+                queryParam("pageSize", "25")
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "_embedded": {
+                                "blogPosts": [
+                                    {
+                                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                                        "title": "Database Indexing Best Practices",
+                                        "summary": "How to optimize your PostgreSQL queries with proper indexing",
+                                        "publicationTime": "2025-12-01T09:00:00Z",
+                                        "_links": {
+                                            "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                                        }
+                                    },
+                                    {
+                                        "uid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                                        "title": "Getting Started with Kotlin Coroutines",
+                                        "summary": "A beginner's guide to asynchronous programming in Kotlin",
+                                        "publicationTime": "2024-03-15T10:00:00Z",
+                                        "_links": {
+                                            "self": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" }
+                                        }
                                     }
-                                },
-                                {
-                                    "uid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-                                    "title": "Getting Started with Kotlin Coroutines",
-                                    "summary": "A beginner's guide to asynchronous programming in Kotlin",
-                                    "publicationTime": "2024-03-15T10:00:00Z",
-                                    "_links": {
-                                        "self": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" },
-                                        "patch": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" },
-                                        "delete": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" }
-                                    }
-                                }
-                            ]
-                        },
-                        "page": {
-                            "size": 25,
-                            "totalElements": 2,
-                            "totalPages": 1,
-                            "number": 1
+                                ]
+                            },
+                            "page": {
+                                "size": 25,
+                                "totalElements": 2,
+                                "totalPages": 1,
+                                "number": 1
+                            }
                         }
-                    }
-                    """,
-                    compareMode = STRICT
-                )
+                        """,
+                        compareMode = STRICT
+                    )
+                }
+            }
+        }
+
+        @Test
+        fun `GET on blog posts as a user returns 200 with paged blog post representations with extra links`() {
+            every { getBlogPosts(any(), PageQuery(1, 25)) } returns pagedResult
+
+            mockMvc.get("/api/blog-posts") {
+                with(jwtWithAuthorRole())
+                queryParam("pageNumber", "1")
+                queryParam("pageSize", "25")
+            }.andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    json(
+                        """
+                        {
+                            "_embedded": {
+                                "blogPosts": [
+                                    {
+                                        "uid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                                        "_links": {
+                                            "self": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                            "patch": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" },
+                                            "delete": { "href": "/api/blog-posts/a1b2c3d4-e5f6-7890-abcd-ef1234567890" }
+                                        }
+                                    },
+                                    {
+                                        "uid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+                                        "_links": {
+                                            "self": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" },
+                                            "patch": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" },
+                                            "delete": { "href": "/api/blog-posts/b2c3d4e5-f6a7-8901-bcde-f12345678901" }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                        """,
+                        compareMode = LENIENT
+                    )
+                }
             }
         }
     }

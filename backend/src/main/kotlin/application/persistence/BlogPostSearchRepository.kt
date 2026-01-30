@@ -16,7 +16,13 @@ class BlogPostSearchRepository(
     private val clock: Clock,
 ) {
 
-    private val pagedSearchQuery =
+    private val completePageQuery =
+        """
+        SELECT * FROM blog_posts
+        ORDER BY publication_time DESC
+        LIMIT :pageSize OFFSET :offset
+        """.trimIndent()
+    private val publishedPageQuery =
         """
         SELECT * FROM blog_posts
         WHERE publication_time <= :now
@@ -24,21 +30,30 @@ class BlogPostSearchRepository(
         LIMIT :pageSize OFFSET :offset
         """.trimIndent()
 
-    private val countQuery =
+    private val completeTotalsQuery =
+        "SELECT COUNT(*) FROM blog_posts"
+    private val publishedTotalsQuery =
         "SELECT COUNT(*) FROM blog_posts WHERE publication_time <= :now"
 
-    fun getPage(query: PageQuery): PagedResult<BlogPost> {
+    fun getPage(query: PageQuery, includeFuture: Boolean): PagedResult<BlogPost> {
+        return when (includeFuture) {
+            true -> getPage(query, completePageQuery, completeTotalsQuery)
+            false -> getPage(query, publishedPageQuery, publishedTotalsQuery)
+        }
+    }
+
+    private fun getPage(query: PageQuery, pageQuery: String, totalsQuery: String): PagedResult<BlogPost> {
         val now = clock.instant()
         val offset = (query.number - 1) * query.size
 
-        val content = client.sql(pagedSearchQuery)
+        val content = client.sql(pageQuery)
             .param("now", withOffset(now))
             .param("pageSize", query.size)
             .param("offset", offset)
             .query(BlogPostMapper)
             .list()
 
-        val totalElements = client.sql(countQuery)
+        val totalElements = client.sql(totalsQuery)
             .param("now", withOffset(now))
             .query(Long::class.java)
             .single()

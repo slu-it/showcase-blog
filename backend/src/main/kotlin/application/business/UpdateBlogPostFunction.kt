@@ -8,7 +8,7 @@ import java.util.UUID
 class UpdateBlogPostFunction(
     private val repository: BlogPostCrudRepository
 ) {
-    operator fun invoke(user: CurrentUser, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost? {
+    operator fun invoke(user: User, uid: UUID, update: (MutableBlogPost) -> Unit): BlogPost? {
         // TODO
         //  - allow update only if user is the author or an admin
         return repository.updateById(user, uid, update)
