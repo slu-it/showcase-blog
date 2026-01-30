@@ -18,9 +18,18 @@ export class BlogPostListView implements OnInit {
   blogPosts: BlogPost[] = [];
 
   ngOnInit(): void {
+    this.loadPosts();
+  }
+
+  deletePost(uid: string): void {
+    this.service.delete(uid)
+      .subscribe(() => this.loadPosts());
+  }
+
+  private loadPosts(): void {
     this.service.getPage(1, 10)
       .subscribe(page => {
-        this.blogPosts = page._embedded.blogPosts;
+        this.blogPosts = page._embedded?.blogPosts ?? [];
       });
   }
 }

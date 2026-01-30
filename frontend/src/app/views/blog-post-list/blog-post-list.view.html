@@ -1,7 +1,7 @@
 <div class="blog-post-list">
   @for (post of blogPosts; track post._links.self.href) {
     <div class="blog-post">
-      <h2>@if (post._links.patch) {<a routerLink="/editor/{{ post.uid }}">✏️</a> }{{ post.title }}</h2>
+      <h2>@if (post._links.patch) {<a routerLink="/editor/{{ post.uid }}">✏️</a> }@if (post._links.delete) {<a (click)="deletePost(post.uid)">🗑️</a> }{{ post.title }}</h2>
       <p>{{ post.summary }}</p>
       <p>{{ post.publicationTime | date:"long" }}</p>
     </div>
