@@ -7,10 +7,9 @@ import org.springframework.stereotype.Component
 class GetBlogPostsFunction(
     private val repository: BlogPostSearchRepository
 ) {
-    operator fun invoke(user: CurrentUser, query: PageQuery): PagedResult<BlogPost> {
-        // TODO
-        //  - load blog post authorship data
-        //  - if user is not the author, increase read counter
-        return repository.getPage(query)
-    }
+    operator fun invoke(user: User, query: PageQuery): PagedResult<BlogPost> =
+        when {
+            user.isAuthor -> repository.getPage(query, includeFuture = true)
+            else -> repository.getPage(query, includeFuture = false)
+        }
 }

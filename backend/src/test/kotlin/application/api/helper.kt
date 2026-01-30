@@ -8,9 +8,13 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 fun jsonValue(@Language("json") value: String): String =
     value.trimIndent()
 
-fun jwtWithUserRole() = jwt()
+fun jwtWithUserRole() = jwtWithRoles("USER")
+fun jwtWithAuthorRole() = jwtWithRoles("USER", "AUTHOR")
+fun jwtWithAdminRole() = jwtWithRoles("USER", "AUTHOR", "ADMIN")
+
+fun jwtWithRoles(vararg roles: String) = jwt()
     .authorities(CustomJwtGrantedAuthoritiesConverter)
     .jwt { jwt ->
         jwt.subject(defaultUser.uid)
-        jwt.claim("authorities", listOf("ROLE_USER"))
+        jwt.claim("authorities", roles.map { "ROLE_$it" })
     }

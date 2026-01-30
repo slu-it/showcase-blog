@@ -6,6 +6,8 @@ import application.business.GetBlogPostFunction
 import application.business.GetBlogPostsFunction
 import application.business.PageQuery
 import application.business.UpdateBlogPostFunction
+import application.config.NeedsAuthorRole
+import application.config.NeedsUserRole
 import org.springframework.hateoas.PagedModel
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
@@ -36,29 +38,34 @@ class BlogPostController(
     private val clock: Clock
 ) {
 
+    @NeedsAuthorRole
     @PostMapping
     @ResponseStatus(CREATED)
     fun create(
         auth: JwtAuthenticationToken,
         @RequestBody data: CreationData
     ): BlogPostRepresentation {
-        val blogPost = createBlogPost(user(auth), blogPostData(data, clock))
-        return representation(blogPost)
+        val user = user(auth)
+        val blogPost = createBlogPost(user, blogPostData(data, clock))
+        return representation(blogPost, user)
     }
 
+    @NeedsAuthorRole
     @PatchMapping("/{uid}")
     fun patch(
         auth: JwtAuthenticationToken,
         @PathVariable uid: UUID,
         @RequestBody data: JsonNode
     ): ResponseEntity<BlogPostRepresentation> {
-        val blogPost = updateBlogPost(user(auth), uid) { post -> patch(post, data) }
+        val user = user(auth)
+        val blogPost = updateBlogPost(user, uid) { post -> patch(post, data) }
         return when (blogPost) {
             null -> ResponseEntity.notFound().build()
-            else -> ResponseEntity.ok(representation(blogPost))
+            else -> ResponseEntity.ok(representation(blogPost, user))
         }
     }
 
+    @NeedsAuthorRole
     @DeleteMapping("/{uid}")
     @ResponseStatus(NO_CONTENT)
     fun delete(
@@ -68,25 +75,29 @@ class BlogPostController(
         deleteBlogPost(user(auth), uid)
     }
 
+    @NeedsUserRole
     @GetMapping("/{uid}")
     fun get(
         auth: JwtAuthenticationToken,
         @PathVariable uid: UUID
     ): ResponseEntity<BlogPostRepresentation> {
-        val blogPost = getBlogPost(user(auth), uid)
+        val user = user(auth)
+        val blogPost = getBlogPost(user, uid)
         return when (blogPost) {
             null -> ResponseEntity.notFound().build()
-            else -> ResponseEntity.ok(representation(blogPost))
+            else -> ResponseEntity.ok(representation(blogPost, user))
         }
     }
 
+    @NeedsUserRole
     @GetMapping
     fun getPage(
         auth: JwtAuthenticationToken,
         @RequestParam("pageNumber") pageNumber: Int,
         @RequestParam("pageSize", defaultValue = "25") pageSize: Int,
     ): PagedModel<BlogPostRepresentation> {
-        val page = getBlogPosts(user(auth), PageQuery(pageNumber, pageSize))
-        return representations(page)
+        val user = user(auth)
+        val page = getBlogPosts(user, PageQuery(pageNumber, pageSize))
+        return representations(page, user)
     }
 }
