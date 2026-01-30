@@ -25,7 +25,7 @@ import org.springframework.security.web.SecurityFilterChain
 import java.security.KeyPairGenerator.getInstance
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.util.*
+import java.util.UUID
 
 private const val RSA_KEY_SIZE = 2048
 
@@ -79,15 +79,20 @@ class SecurityConfiguration {
         }
 
     @Bean
-    fun users(): UserDetailsService {
-        val user = User.builder()
-            .username("user")
+    fun users(): UserDetailsService =
+        InMemoryUserDetailsManager(
+            dummyUser("user", "USER"),
+            dummyUser("author", "USER", "AUTHOR"),
+            dummyUser("admin", "USER", "AUTHOR", "ADMIN"),
+        )
+
+    private fun dummyUser(username: String, vararg roles: String) =
+        User.builder()
+            .username(username)
             .password("password")
             .passwordEncoder(passwordEncoder::encode)
-            .roles("USER")
+            .roles(*roles)
             .build()
-        return InMemoryUserDetailsManager(user)
-    }
 
     @Bean
     fun jwkSource(): JWKSource<SecurityContext> {
