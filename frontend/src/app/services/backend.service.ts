@@ -17,11 +17,15 @@ export class BackendService {
   }
 
   update(uid: string, data: BlogPostUpdateDto): Observable<BlogPost> {
-    return this.http.patch<BlogPost>(this.apiUrl + '/' + uid, data);
+    return this.http.patch<BlogPost>(`${this.apiUrl}/${uid}`, data);
   }
 
-  get(uid: String): Observable<BlogPost> {
-    return this.http.get<BlogPost>(this.apiUrl + '/' + uid);
+  delete(uid: String): Observable<BlogPost> {
+    return this.http.delete<BlogPost>(`${this.apiUrl}/${uid}`);
+  }
+
+  get(uid: String): Observable<void> {
+    return this.http.get<void>(`${this.apiUrl}/${uid}`);
   }
 
   getPage(pageNumber: number, pageSize: number): Observable<BlogPostsPage> {
