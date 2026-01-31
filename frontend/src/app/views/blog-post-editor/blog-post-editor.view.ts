@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, DestroyRef, inject, OnInit, viewChild} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {TranslateModule} from '@ngx-translate/core';
-import {BlogPost, BlogPostDto, BlogPostUpdateDto} from '../../services/backend.model';
-import {BackendService} from '../../services/backend.service';
-import {BlogPostEditorForm} from '../../common/blog-post-editor-form/blog-post-editor.form';
-import {ErrorMessage} from '../../common/error-messages/error.message';
+import {BlogPost, BlogPostDto, BlogPostUpdateDto} from '../../services/backend/backend.model';
+import {BackendService} from '../../services/backend/backend.service';
+import {BlogPostEditorForm} from '../../common/components/blog-post-editor/blog-post-editor-form';
+import {ErrorMessage} from '../../common/components/error-message/error.message';
+import {truncateIsoStringToMinutes} from '../../common/time.functions';
+import {ContextService} from '../../services/context/context.service';
 
 @Component({
   selector: 'app-blog-post-editor-view',
@@ -15,8 +17,10 @@ import {ErrorMessage} from '../../common/error-messages/error.message';
 })
 export class BlogPostEditorView implements OnInit, AfterViewInit {
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private service = inject(BackendService);
+  private context = inject(ContextService);
+  private backend = inject(BackendService);
   private editor = viewChild(BlogPostEditorForm);
 
   private originalData?: BlogPost;
@@ -41,7 +45,7 @@ export class BlogPostEditorView implements OnInit, AfterViewInit {
     return this.originalData != null;
   }
 
-  handleSubmit(data: BlogPostDto) {
+  async handleSubmit(data: BlogPostDto) {
     const original = this.originalData!;
     const update: BlogPostUpdateDto = {};
 
@@ -54,29 +58,23 @@ export class BlogPostEditorView implements OnInit, AfterViewInit {
     if ((data.content ?? '') !== (original.content ?? '')) {
       update.content = data.content ?? null;
     }
-    if (data.publicationTime !== this.truncateToMinutes(original.publicationTime)) {
+    if (data.publicationTime !== truncateIsoStringToMinutes(original.publicationTime)) {
       update.publicationTime = data.publicationTime;
     }
 
     if (Object.keys(update).length === 0) return;
 
-    this.service.update(this.originalData!.uid, update)
+    this.backend.updateBlogPost(this.originalData!.uid, update)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(response => {
-        this.originalData = response;
-        this.editor()!.setFrom(response);
+      .subscribe({
+        next: response => this.router.navigate(['/view', response.uid]),
+        error: () => {
+          /* already handled by backend service */
+        },
       });
   }
 
-  /**
-   * The datetime-local input only has minute precision, so the round-trip
-   * (backend UTC ISO → local datetime → UTC ISO) loses seconds and milliseconds.
-   * To avoid false positives when comparing the submitted value against the
-   * original, we truncate the original to minute precision as well.
-   */
-  private truncateToMinutes(isoString: string): string {
-    const date = new Date(isoString);
-    date.setSeconds(0, 0);
-    return date.toISOString();
+  canGenerallyEditBlogPosts(): boolean {
+    return this.context.user().isAuthor;
   }
 }

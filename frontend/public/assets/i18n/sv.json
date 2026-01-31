@@ -1,8 +1,9 @@
 {
   "pageTitle": {
-    "blogPosts": "Blogginlägg",
-    "createBlogPost": "Skapa blogginlägg",
-    "editBlogPost": "Blogginläggsredigerare"
+    "home": "Blogginlägg",
+    "creator": "Skapa blogginlägg",
+    "editor": "Blogginläggsredigerare",
+    "viewer": "Blogginlägg"
   },
   "nav": {
     "blogPosts": "Blogginlägg",
@@ -13,13 +14,11 @@
     "summary": "Sammanfattning",
     "content": "Innehåll",
     "publicationTime": "Publiceringstid",
-    "submit": "Skicka"
-  },
-  "creator": {
-    "message": "Meddelande",
-    "creating": "skapar ...",
-    "success": "Skapades framgångsrikt!",
-    "error": "Fel"
+    "submit": "Skicka",
+    "create": "Skapa",
+    "save": "Spara",
+    "write": "Skriv",
+    "preview": "Förhandsvisning"
   },
   "language": {
     "label": "Språk",
@@ -34,5 +33,13 @@
       "notFound": "404 Hittades Inte",
       "oops": "Hoppsan, något gick fruktansvärt fel!"
     }
+  },
+  "notifications": {
+    "created": "blogginlägg skapat",
+    "updated": "blogginlägg uppdaterat",
+    "deleted": "blogginlägg raderat",
+    "failedToCreate": "det gick inte att skapa blogginlägget",
+    "failedToUpdate": "det gick inte att uppdatera blogginlägget",
+    "failedToDelete": "det gick inte att radera blogginlägget"
   }
 }

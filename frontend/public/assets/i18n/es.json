@@ -1,8 +1,9 @@
 {
   "pageTitle": {
-    "blogPosts": "Publicaciones",
-    "createBlogPost": "Crear publicación",
-    "editBlogPost": "Editor de publicación"
+    "home": "Publicaciones",
+    "creator": "Crear publicación",
+    "editor": "Editor de publicación",
+    "viewer": "Publicación"
   },
   "nav": {
     "blogPosts": "Publicaciones",
@@ -13,13 +14,11 @@
     "summary": "Resumen",
     "content": "Contenido",
     "publicationTime": "Fecha de publicación",
-    "submit": "Enviar"
-  },
-  "creator": {
-    "message": "Mensaje",
-    "creating": "creando ...",
-    "success": "¡Creado con éxito!",
-    "error": "Error"
+    "submit": "Enviar",
+    "create": "Crear",
+    "save": "Guardar",
+    "write": "Escribir",
+    "preview": "Vista previa"
   },
   "language": {
     "label": "Idioma",
@@ -34,5 +33,13 @@
       "notFound": "404 No Encontrado",
       "oops": "¡Vaya, algo salió terriblemente mal!"
     }
+  },
+  "notifications": {
+    "created": "publicación creada",
+    "updated": "publicación actualizada",
+    "deleted": "publicación eliminada",
+    "failedToCreate": "no se pudo crear la publicación",
+    "failedToUpdate": "no se pudo actualizar la publicación",
+    "failedToDelete": "no se pudo eliminar la publicación"
   }
 }

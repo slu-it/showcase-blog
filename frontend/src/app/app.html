@@ -1,7 +1,8 @@
 <nav>
   <a routerLink="/">{{ 'nav.blogPosts' | translate }}</a>
-  |
-  <a routerLink="/create">{{ 'nav.create' | translate }}</a>
+  @if (canCreateBlogPosts()) {
+    | <a routerLink="/create">{{ 'nav.create' | translate }}</a>
+  }
 </nav>
 <div class="language-switcher">
   <label for="language">{{ 'language.label' | translate }}</label>
@@ -15,3 +16,4 @@
 <div class="view-content">
   <router-outlet/>
 </div>
+<app-notification/>

@@ -1,0 +1,11 @@
+.rendered-content {
+  ::ng-deep pre {
+    font-family: "Lucida Console", "Courier New", monospace;
+    border: 1px solid grey;
+    background-color: #f0f0f0;
+    padding: 10px;
+
+    code {
+    }
+  }
+}

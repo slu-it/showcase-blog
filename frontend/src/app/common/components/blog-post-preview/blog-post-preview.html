@@ -1,0 +1,27 @@
+<div class="blog-post">
+  <h1 class="title">
+    <a class="title-link" routerLink="/view/{{post().uid}}">
+      {{ post().title }}
+    </a>
+  </h1>
+  <p>
+    <span class="publicationTime">
+      {{ post().publicationTime | date:"short" }}
+    </span>
+    @if (canBeEdited() || canBeDeleted()) {
+      <span class="actions">
+        @if (canBeEdited()) {
+          <button class="action" (click)="handleEditClicked()">✏️</button>
+        }
+        @if (canBeDeleted()) {
+          <button class="action" (click)="handleDeleteClicked()">🗑️</button>
+        }
+      </span>
+    }
+  </p>
+  @if (post().summary) {
+    <p class="summary">
+      {{ post().summary }}
+    </p>
+  }
+</div>

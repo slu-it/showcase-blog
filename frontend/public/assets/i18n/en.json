@@ -1,8 +1,9 @@
 {
   "pageTitle": {
-    "blogPosts": "Blog Posts",
-    "createBlogPost": "Create Blog Post",
-    "editBlogPost": "Blog Post Editor"
+    "home": "Blog Posts",
+    "creator": "Blog Post Creator",
+    "editor": "Blog Post Editor",
+    "viewer": "Blog Post"
   },
   "nav": {
     "blogPosts": "Blog Posts",
@@ -13,13 +14,11 @@
     "summary": "Summary",
     "content": "Content",
     "publicationTime": "Publication Time",
-    "submit": "Submit"
-  },
-  "creator": {
-    "message": "Message",
-    "creating": "creating ...",
-    "success": "Successfully Created!",
-    "error": "Error"
+    "submit": "Submit",
+    "create": "Create",
+    "save": "Save",
+    "write": "Write",
+    "preview": "Preview"
   },
   "language": {
     "label": "Language",
@@ -34,5 +33,13 @@
       "notFound": "404 Not Found",
       "oops": "Oops, something went terribly wrong!"
     }
+  },
+  "notifications": {
+    "created": "blog post created",
+    "updated": "blog post updated",
+    "deleted": "blog post deleted",
+    "failedToCreate": "failed to create blog post",
+    "failedToUpdate": "failed to update blog post",
+    "failedToDelete": "failed to delete blog post"
   }
 }

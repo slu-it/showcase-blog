@@ -1,8 +1,9 @@
 {
   "pageTitle": {
-    "blogPosts": "Blogbeiträge",
-    "createBlogPost": "Blogbeitrag erstellen",
-    "editBlogPost": "Blogbeitrag-Editor"
+    "home": "Blogbeiträge",
+    "creator": "Blogbeitrag erstellen",
+    "editor": "Blogbeitrag-Editor",
+    "viewer": "Blogbeitrag"
   },
   "nav": {
     "blogPosts": "Blogbeiträge",
@@ -13,13 +14,11 @@
     "summary": "Zusammenfassung",
     "content": "Inhalt",
     "publicationTime": "Veröffentlichungszeitpunkt",
-    "submit": "Absenden"
-  },
-  "creator": {
-    "message": "Nachricht",
-    "creating": "wird erstellt ...",
-    "success": "Erfolgreich erstellt!",
-    "error": "Fehler"
+    "submit": "Absenden",
+    "create": "Erstellen",
+    "save": "Speichern",
+    "write": "Schreiben",
+    "preview": "Vorschau"
   },
   "language": {
     "label": "Sprache",
@@ -34,5 +33,13 @@
       "notFound": "404 Nicht Gefunden",
       "oops": "Hoppla, da ist etwas gehörig schiefgelaufen!"
     }
+  },
+  "notifications": {
+    "created": "Blogbeitrag erstellt",
+    "updated": "Blogbeitrag aktualisiert",
+    "deleted": "Blogbeitrag gelöscht",
+    "failedToCreate": "Blogbeitrag konnte nicht erstellt werden",
+    "failedToUpdate": "Blogbeitrag konnte nicht aktualisiert werden",
+    "failedToDelete": "Blogbeitrag konnte nicht gelöscht werden"
   }
 }
