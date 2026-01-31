@@ -1,4 +1,4 @@
-<form data-testid="form" [formGroup]="form" (ngSubmit)="handleSubmit()">
+<form [formGroup]="form" (ngSubmit)="handleSubmit()">
 
   <div class="form-field">
     <label for="title">
@@ -7,7 +7,7 @@
         <span class="required-marker">*</span>
       }
     </label>
-    <input data-testid="title-input" id="title" type="text" formControlName="title"
+    <input id="title" type="text" formControlName="title"
            [class.invalid]="form.controls.title.invalid"/>
   </div>
 
@@ -18,7 +18,7 @@
         <span class="required-marker">*</span>
       }
     </label>
-    <textarea data-testid="summary-input" id="summary" formControlName="summary" rows="4"
+    <textarea id="summary" formControlName="summary" rows="4"
               [class.invalid]="form.controls.summary.invalid"></textarea>
   </div>
 
@@ -29,8 +29,20 @@
         <span class="required-marker">*</span>
       }
     </label>
-    <textarea data-testid="content-input" id="content" formControlName="content" rows="25"
-              [class.invalid]="form.controls.content.invalid"></textarea>
+    <div class="content-tabbed">
+      <div class="tab-bar">
+        <button type="button" class="tab" [class.active]="contentTab === 'write'"
+                (click)="contentTab = 'write'">{{ 'editor.write' | translate }}</button>
+        <button type="button" class="tab" [class.active]="contentTab === 'preview'"
+                (click)="contentTab = 'preview'">{{ 'editor.preview' | translate }}</button>
+      </div>
+      @if (contentTab === 'write') {
+        <textarea id="content" class="content" formControlName="content" rows="25"
+                  [class.invalid]="form.controls.content.invalid"></textarea>
+      } @else if (contentTab === 'preview') {
+        <app-content-renderer class="preview" [content]="form.value.content ?? ''"/>
+      }
+    </div>
   </div>
 
   <div class="form-field">
@@ -41,10 +53,10 @@
         <span class="required-marker">*</span>
       }
     </label>
-    <input data-testid="publication-time-input" id="publicationTime" type="datetime-local"
+    <input id="publicationTime" type="datetime-local"
            formControlName="publicationTime" [class.invalid]="form.controls.publicationTime.invalid"/>
   </div>
 
-  <button data-testid="submit-button" type="submit" [disabled]="!form.valid">{{ 'editor.submit' | translate }}</button>
+  <button type="submit" [disabled]="!canBeSubmitted()">{{ submitLabel() | translate }}</button>
 
 </form>

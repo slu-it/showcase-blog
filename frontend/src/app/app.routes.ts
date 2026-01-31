@@ -4,27 +4,42 @@ import {catchError, of} from 'rxjs';
 import {BlogPostListView} from './views/blog-post-list/blog-post-list.view';
 import {BlogPostCreatorView} from './views/blog-post-creator/blog-post-creator.view';
 import {BlogPostEditorView} from './views/blog-post-editor/blog-post-editor.view';
-import {BackendService} from './services/backend.service';
+import {BackendService} from './services/backend/backend.service';
+import {BlogPostViewerView} from './views/blog-post-viewer/blog-post-viewer.view';
 
 export const routes: Routes = [
   {
     path: '',
-    title: 'pageTitle.blogPosts',
+    title: 'pageTitle.home',
     component: BlogPostListView
   },
   {
     path: 'create',
-    title: 'pageTitle.createBlogPost',
+    title: 'pageTitle.creator',
     component: BlogPostCreatorView
   },
   {
-    path: 'editor/:uid',
-    title: 'pageTitle.editBlogPost',
+    path: 'edit/:uid',
+    title: 'pageTitle.editor',
     component: BlogPostEditorView,
     resolve: {
-      blogPost: (route: ActivatedRouteSnapshot) => inject(BackendService).get(route.params['uid']).pipe(
-        catchError(error => of({error}))
-      )
+      blogPost: (route: ActivatedRouteSnapshot) => {
+        const uid = route.params['uid'];
+        return inject(BackendService).getBlogPost(uid)
+          .pipe(catchError(error => of({error})));
+      }
+    }
+  },
+  {
+    path: 'view/:uid',
+    title: 'pageTitle.viewer',
+    component: BlogPostViewerView,
+    resolve: {
+      blogPost: (route: ActivatedRouteSnapshot) => {
+        const uid = route.params['uid'];
+        return inject(BackendService).getBlogPost(uid)
+          .pipe(catchError(error => of({error})));
+      }
     }
   }
 ];

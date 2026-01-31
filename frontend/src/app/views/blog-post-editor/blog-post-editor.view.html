@@ -1,5 +1,10 @@
-@if (loadedSuccessfully()) {
-  <app-blog-post-editor-form (submitClicked)="handleSubmit($event)"/>
+@if (canGenerallyEditBlogPosts()) {
+  @if (loadedSuccessfully()) {
+    <app-blog-post-editor-form submitLabel="editor.save" (submitClicked)="handleSubmit($event)"/>
+  } @else {
+    <app-error-message [status]="errorStatus!"/>
+  }
 } @else {
-  <app-error-message [status]="errorStatus!"/>
+  <app-error-message [status]="403"/>
 }
+

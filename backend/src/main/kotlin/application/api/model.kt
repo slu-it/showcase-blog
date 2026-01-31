@@ -5,15 +5,22 @@ import org.springframework.hateoas.server.core.Relation
 import java.time.Instant
 import java.util.UUID
 
-data class CreationData(
-    val title: String,
-    val summary: String?,
-    val content: String?,
-    val publicationTime: Instant?,
+// CONTEXT
+
+data class Context(
+    val user: UserDto
+) : RepresentationModel<Context>()
+
+data class UserDto(
+    val username: String,
+    val isAuthor: Boolean,
+    val isAdmin: Boolean,
 )
 
-data class PatchData(
-    val title: String?,
+// BLOG POSTS
+
+data class CreationData(
+    val title: String,
     val summary: String?,
     val content: String?,
     val publicationTime: Instant?,

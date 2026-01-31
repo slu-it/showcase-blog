@@ -1,8 +1,18 @@
+export interface Context {
+  user: User;
+}
+
+export interface User {
+  username: string;
+  isAuthor: boolean;
+  isAdmin: boolean;
+}
+
 export interface BlogPost {
   uid: string;
   title: string;
   summary: string;
-  content?: string;
+  content: string;
   publicationTime: string;
   _links: BlogPostLinks;
 }

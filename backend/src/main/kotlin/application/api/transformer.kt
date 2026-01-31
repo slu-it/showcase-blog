@@ -17,6 +17,8 @@ import java.time.Clock
 import java.time.Instant
 import kotlin.jvm.optionals.getOrNull
 
+// GENERAL
+
 fun user(authentication: JwtAuthenticationToken): User =
     User(
         uid = authentication.name,
@@ -24,6 +26,20 @@ fun user(authentication: JwtAuthenticationToken): User =
         isAuthor = isAuthor(authentication),
         isAdmin = isAdmin(authentication),
     )
+
+// CONTEXT
+
+fun context(user: User): Context =
+    Context(user = userDto(user))
+
+fun userDto(user: User): UserDto =
+    UserDto(
+        username = user.uid,
+        isAuthor = user.isAuthor,
+        isAdmin = user.isAdmin,
+    )
+
+// BLOG POSTS
 
 fun blogPostData(data: CreationData, clock: Clock): BlogPostData =
     BlogPostData(
