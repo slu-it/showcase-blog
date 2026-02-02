@@ -1,0 +1,5 @@
+@if (canCreateBlogPosts()) {
+  <app-blog-post-editor-form submitLabel="editor.create" (submitClicked)="handleSubmit($event)"></app-blog-post-editor-form>
+} @else {
+  <app-error-state [status]="403"/>
+}

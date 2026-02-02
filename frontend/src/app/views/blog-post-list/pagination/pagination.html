@@ -1,0 +1,7 @@
+<div class="pagination">
+  <button [disabled]="!hasPreviousPage" (click)="handleFirstClicked()">＜＜</button>
+  <button [disabled]="!hasPreviousPage" (click)="handlePreviousClicked()">＜</button>
+  <span>{{ page().number }}/{{ page().totalPages }}</span>
+  <button [disabled]="!hasNextPage" (click)="handleNextClicked()">＞</button>
+  <button [disabled]="!hasNextPage" (click)="handleLastClicked()">＞＞</button>
+</div>

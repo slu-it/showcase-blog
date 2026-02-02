@@ -1,0 +1,12 @@
+markdown {
+  ::ng-deep pre {
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: #f6f6f6;
+    border: 1px solid grey;
+    padding: 10px;
+  }
+  ::ng-deep code {
+    font-family: "Lucida Console", "Courier New", monospace;
+    background-color: #f6f6f6;
+  }
+}

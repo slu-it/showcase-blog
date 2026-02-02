@@ -1,0 +1,9 @@
+<app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+<hr>
+<div class="blog-post-list">
+  @for (post of blogPosts(); track post._links.self.href) {
+    <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
+  }
+</div>
+<hr>
+<app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
