@@ -13,8 +13,8 @@ import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 import {provideMarkdown} from 'ngx-markdown';
 
 import {routes} from './app.routes';
-import {TranslatedTitleStrategy} from './translated-title.strategy';
-import {ContextService} from './services/context/context.service';
+import {TranslatedTitleStrategy} from './common/translated-title.strategy';
+import {ContextService} from './common/context/context.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [

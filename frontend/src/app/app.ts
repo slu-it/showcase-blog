@@ -1,12 +1,12 @@
 import {Component, inject} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
-import {Notifications} from './common/components/notification/notifications';
-import {ContextService} from './services/context/context.service';
+import {NotificationsContainer} from './common/notifications/notifications-container';
+import {ContextService} from './common/context/context.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, TranslateModule, Notifications],
+  imports: [RouterOutlet, RouterLink, TranslateModule, NotificationsContainer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

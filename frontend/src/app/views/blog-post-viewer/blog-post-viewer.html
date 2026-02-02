@@ -1,0 +1,5 @@
+@if (loadedSuccessfully()) {
+  <app-blog-post-view [post]="post!" (editClicked)="editPost(post!.uid)" (deleteClicked)="deletePost(post!.uid)"/>
+} @else {
+  <app-error-state [status]="errorStatus!"/>
+}
