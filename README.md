@@ -67,7 +67,7 @@ Navigate to [http://localhost:4180](http://localhost:4180) in your browser.
 
 You will be redirected to the login page. Use the following credentials:
 
-- **Username:** `user`
+- **Username:** `user`, `author` or `admin`
 - **Password:** `password`
 
 After successful authentication, you will be redirected to the frontend home page.

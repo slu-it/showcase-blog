@@ -17,8 +17,7 @@ export class ContextService {
    * Therefore, the _user should never actually be "dummyUser"
    */
   async refresh(): Promise<void> {
-    const foo = this.http.get<Context>(`/api/context`);
-    const context = await firstValueFrom(foo);
+    const context = await firstValueFrom(this.http.get<Context>(`/api/context`));
     this._user.set(context.user);
   }
 }
