@@ -1,6 +1,6 @@
 <nav>
   <a routerLink="/">{{ 'nav.blogPosts' | translate }}</a>
-  @if (canCreateBlogPosts()) {
+  @if (userCanCreateBlogPosts) {
     | <a routerLink="/create">{{ 'nav.create' | translate }}</a>
   }
 </nav>

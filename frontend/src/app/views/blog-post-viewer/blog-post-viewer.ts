@@ -31,7 +31,7 @@ export class BlogPostViewer implements OnInit {
     }
   }
 
-  loadedSuccessfully(): boolean {
+  get blogPostWasLoadedSuccessfully(): boolean {
     return this.post != null;
   }
 

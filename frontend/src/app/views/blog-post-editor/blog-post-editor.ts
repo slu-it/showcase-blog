@@ -41,11 +41,11 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
     }
   }
 
-  canGenerallyEditBlogPosts(): boolean {
+  get userCanGenerallyEditBlogPosts(): boolean {
     return this.context.user().isAuthor;
   }
 
-  loadedSuccessfully(): boolean {
+  get blogPostWasLoadedSuccessfully(): boolean {
     return this.originalData != null;
   }
 

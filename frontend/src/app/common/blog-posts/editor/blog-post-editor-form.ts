@@ -37,7 +37,7 @@ export class BlogPostEditorForm {
     this.referenceValues = values;
   }
 
-  canBeSubmitted(): boolean {
+  get formCanBeSubmitted(): boolean {
     if (!this.form.valid) return false;
     if (!this.referenceValues) return true;
     const current = this.form.value;

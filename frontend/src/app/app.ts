@@ -31,13 +31,13 @@ export class App {
     this.translate.use(this.currentLang);
   }
 
+  get userCanCreateBlogPosts(): boolean {
+    return this.context.user().isAuthor;
+  }
+
   switchLanguage(lang: string) {
     this.currentLang = lang;
     localStorage.setItem(App.LANGUAGE_STORAGE_KEY, lang);
     this.translate.use(lang);
-  }
-
-  canCreateBlogPosts(): boolean {
-    return this.context.user().isAuthor;
   }
 }
