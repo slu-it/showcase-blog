@@ -6,12 +6,12 @@
     <span class="publicationTime">
       {{ post().publicationTime | date:"short" }}
     </span>
-    @if (canBeEdited() || canBeDeleted()) {
+    @if (blogPostCanBeEdited || blogPostCanBeDeleted) {
       <span class="actions">
-        @if (canBeEdited()) {
+        @if (blogPostCanBeEdited) {
           <button class="action" (click)="handleEditClicked()">✏️</button>
         }
-        @if (canBeDeleted()) {
+        @if (blogPostCanBeDeleted) {
           <button class="action" (click)="handleDeleteClicked()">🗑️</button>
         }
       </span>

@@ -16,11 +16,11 @@ export class BlogPostView {
   readonly editClicked = output<string>();
   readonly deleteClicked = output<string>();
 
-  canBeEdited(): boolean {
+  get blogPostCanBeEdited(): boolean {
     return this.post()._links?.patch != null;
   }
 
-  canBeDeleted(): boolean {
+  get blogPostCanBeDeleted(): boolean {
     return this.post()._links?.delete != null;
   }
 

@@ -19,7 +19,7 @@ export class BlogPostCreator {
   private context = inject(ContextService);
   private backend = inject(BlogPostsService);
 
-  canCreateBlogPosts(): boolean {
+  get userCanCreateBlogPosts(): boolean {
     return this.context.user().isAuthor;
   }
 

@@ -57,6 +57,6 @@
            formControlName="publicationTime" [class.invalid]="form.controls.publicationTime.invalid"/>
   </div>
 
-  <button type="submit" [disabled]="!canBeSubmitted()">{{ submitLabel() | translate }}</button>
+  <button type="submit" [disabled]="!formCanBeSubmitted">{{ submitLabel() | translate }}</button>
 
 </form>
