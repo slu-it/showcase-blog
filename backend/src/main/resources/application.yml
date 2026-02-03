@@ -1,8 +1,7 @@
 logging:
   level:
-    org:
-      springframework:
-        security: TRACE
+    root: INFO
+    application: DEBUG
 
 server:
   port: 8080
