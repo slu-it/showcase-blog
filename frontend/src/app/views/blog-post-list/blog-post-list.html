@@ -7,3 +7,7 @@
 </div>
 <hr>
 <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+
+@if (userCanGenerateBlogPosts) {
+  <app-test-data-generator (generationCompleted)="reloadPage()"/>
+}

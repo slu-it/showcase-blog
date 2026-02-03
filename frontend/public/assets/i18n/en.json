@@ -41,5 +41,8 @@
     "failedToCreate": "failed to create blog post",
     "failedToUpdate": "failed to update blog post",
     "failedToDelete": "failed to delete blog post"
+  },
+  "testing": {
+    "generateBlogPosts": "Generate Blog Posts (for testing)"
   }
 }

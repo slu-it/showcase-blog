@@ -41,5 +41,8 @@
     "failedToCreate": "no se pudo crear la publicación",
     "failedToUpdate": "no se pudo actualizar la publicación",
     "failedToDelete": "no se pudo eliminar la publicación"
+  },
+  "testing": {
+    "generateBlogPosts": "Generar publicaciones (para pruebas)"
   }
 }

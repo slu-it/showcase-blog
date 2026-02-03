@@ -5,6 +5,9 @@ import {Router} from '@angular/router';
 import {BlogPostPreview} from '../../common/blog-posts/preview/blog-post-preview';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Pagination} from './pagination/pagination';
+import {NotificationsContainer} from '../../common/notifications/notifications-container';
+import {TestDataGenerator} from '../../common/test-data-generator/test-data-generator';
+import {ContextService} from '../../common/context/context.service';
 
 const dummyPageInfo = {number: 1, size: 5, totalPages: 1, totalElements: 0};
 
@@ -12,10 +15,11 @@ const dummyPageInfo = {number: 1, size: 5, totalPages: 1, totalElements: 0};
   selector: 'app-v-blog-post-list',
   templateUrl: './blog-post-list.html',
   styleUrl: './blog-post-list.scss',
-  imports: [BlogPostPreview, Pagination]
+  imports: [BlogPostPreview, Pagination, NotificationsContainer, TestDataGenerator]
 })
 export class BlogPostList implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly context = inject(ContextService);
   private readonly backend = inject(BlogPostsService);
   private readonly router = inject(Router);
 
@@ -25,13 +29,21 @@ export class BlogPostList implements OnInit {
   private readonly _pageInfo = signal<PageInfo>(dummyPageInfo);
   protected readonly pageInfo = this._pageInfo.asReadonly();
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadPage(1);
   }
 
-  loadPage(pageNumber: number): void {
+  reloadPage() {
+    this.loadPage(this.pageInfo().number);
+  }
+
+  loadPage(pageNumber: number) {
     this.backend.getBlogPostsPage(pageNumber, this.pageInfo().size)
       .subscribe(page => this.setCurrentPage(page));
+  }
+
+  get userCanGenerateBlogPosts(): boolean {
+    return this.context.user().isAdmin;
   }
 
   private setCurrentPage(page: BlogPostsPage) {
