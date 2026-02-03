@@ -41,5 +41,8 @@
     "failedToCreate": "Blogbeitrag konnte nicht erstellt werden",
     "failedToUpdate": "Blogbeitrag konnte nicht aktualisiert werden",
     "failedToDelete": "Blogbeitrag konnte nicht gelöscht werden"
+  },
+  "testing": {
+    "generateBlogPosts": "Blogbeiträge generieren (zum Testen)"
   }
 }

@@ -17,7 +17,7 @@ export class TranslatedTitleStrategy extends TitleStrategy {
 
   private currentTitleKey?: string;
 
-  override updateTitle(snapshot?: RouterStateSnapshot): void {
+  override updateTitle(snapshot?: RouterStateSnapshot) {
     if (snapshot) {
       this.currentTitleKey = this.buildTitle(snapshot);
     }

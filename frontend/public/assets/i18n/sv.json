@@ -41,5 +41,8 @@
     "failedToCreate": "det gick inte att skapa blogginlägget",
     "failedToUpdate": "det gick inte att uppdatera blogginlägget",
     "failedToDelete": "det gick inte att radera blogginlägget"
+  },
+  "testing": {
+    "generateBlogPosts": "Generera blogginlägg (för testning)"
   }
 }
