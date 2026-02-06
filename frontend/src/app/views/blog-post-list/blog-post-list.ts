@@ -5,17 +5,16 @@ import {Router} from '@angular/router';
 import {BlogPostPreview} from '../../common/blog-posts/preview/blog-post-preview';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Pagination} from './pagination/pagination';
-import {NotificationsContainer} from '../../common/notifications/notifications-container';
 import {TestDataGenerator} from '../../common/test-data-generator/test-data-generator';
 import {ContextService} from '../../common/context/context.service';
 
-const dummyPageInfo = {number: 1, size: 5, totalPages: 1, totalElements: 0};
+const dummyPageInfo = {number: 1, size: 10, totalPages: 1, totalElements: 0};
 
 @Component({
   selector: 'app-v-blog-post-list',
   templateUrl: './blog-post-list.html',
   styleUrl: './blog-post-list.scss',
-  imports: [BlogPostPreview, Pagination, NotificationsContainer, TestDataGenerator]
+  imports: [BlogPostPreview, Pagination, TestDataGenerator]
 })
 export class BlogPostList implements OnInit {
   private readonly destroyRef = inject(DestroyRef);

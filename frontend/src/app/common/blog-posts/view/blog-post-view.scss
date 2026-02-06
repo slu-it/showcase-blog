@@ -1,35 +1,30 @@
 .blog-post {
   .title {
     margin-bottom: 0.5rem;
+    text-align: center;
   }
 
-  .summary {
-    font-size: 1rem;
-    font-weight: normal;
+  .meta {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .publicationTime {
     font-size: 0.8rem;
     font-weight: normal;
-    margin-top: 0.1rem;
   }
 
   .actions {
-    margin-left: 1rem;
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+  }
 
-    button {
-      appearance: none;
-      background: none;
-      border: none;
-      padding: 0;
-      margin-right: 0.25rem;
-      cursor: pointer;
-      width: 1rem;
-      height: 1rem;
-      font-size: 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .content {
+    margin-top: 5rem;
   }
 }

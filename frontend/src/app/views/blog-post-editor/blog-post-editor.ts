@@ -49,6 +49,11 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
     return this.originalData != null;
   }
 
+  async handleCancel() {
+    const original = this.originalData!;
+    await this.router.navigate(['/view', original.uid]);
+  }
+
   async handleSubmit(data: BlogPostDto) {
     const original = this.originalData!;
     const update: BlogPostUpdateDto = {};

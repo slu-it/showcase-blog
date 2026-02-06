@@ -18,7 +18,8 @@
     "create": "Create",
     "save": "Save",
     "write": "Write",
-    "preview": "Preview"
+    "preview": "Preview",
+    "cancel": "Cancel"
   },
   "language": {
     "label": "Language",
@@ -44,5 +45,10 @@
   },
   "testing": {
     "generateBlogPosts": "Generate Blog Posts (for testing)"
+  },
+  "confirmation": {
+    "yes": "Yes",
+    "no": "No",
+    "deletePost": "Do you really want to delete this blog post?"
   }
 }

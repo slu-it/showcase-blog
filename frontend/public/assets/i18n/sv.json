@@ -18,7 +18,8 @@
     "create": "Skapa",
     "save": "Spara",
     "write": "Skriv",
-    "preview": "Förhandsvisning"
+    "preview": "Förhandsvisning",
+    "cancel": "Avbryt"
   },
   "language": {
     "label": "Språk",
@@ -44,5 +45,10 @@
   },
   "testing": {
     "generateBlogPosts": "Generera blogginlägg (för testning)"
+  },
+  "confirmation": {
+    "yes": "Ja",
+    "no": "Nej",
+    "deletePost": "Vill du verkligen ta bort det här blogginlägget?"
   }
 }

@@ -1,0 +1,9 @@
+<div class="overlay" (click)="handleNo()" (keydown.escape)="handleNo()" tabindex="0">
+  <div class="dialog" (click)="$event.stopPropagation()" (keydown.enter)="handleYes()" tabindex="1">
+    <p class="message">{{ message() | translate }}</p>
+    <div class="buttons">
+      <button #yesButton class="yes" (click)="handleYes()">{{ 'confirmation.yes' | translate }}</button>
+      <button #noButton class="no" (click)="handleNo()">{{ 'confirmation.no' | translate }}</button>
+    </div>
+  </div>
+</div>

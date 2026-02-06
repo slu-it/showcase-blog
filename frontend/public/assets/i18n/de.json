@@ -18,7 +18,8 @@
     "create": "Erstellen",
     "save": "Speichern",
     "write": "Schreiben",
-    "preview": "Vorschau"
+    "preview": "Vorschau",
+    "cancel": "Abbrechen"
   },
   "language": {
     "label": "Sprache",
@@ -44,5 +45,10 @@
   },
   "testing": {
     "generateBlogPosts": "Blogbeiträge generieren (zum Testen)"
+  },
+  "confirmation": {
+    "yes": "Ja",
+    "no": "Nein",
+    "deletePost": "Möchten Sie diesen Blogbeitrag wirklich löschen?"
   }
 }
