@@ -16,13 +16,13 @@ import {TranslatePipe} from '@ngx-translate/core';
 })
 export class TestDataGenerator {
   private readonly http = inject(HttpClient);
-  readonly generationCompleted = output<number>();
+  readonly generationCompleted = output<void>();
 
   handleGenerateClicked() {
     const amount = 25;
     this.http.post<void>(`/api/blog-posts-generator`, {amount: amount})
       .subscribe({
-        next: () => this.generationCompleted.emit(amount),
+        next: () => this.generationCompleted.emit(),
         error: error => console.log(`Blog Post generation failed: ${error}`)
       });
   }

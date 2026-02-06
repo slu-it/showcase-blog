@@ -1,11 +1,13 @@
 <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
-<hr>
+<hr class="separator-75p-fading">
 <div class="blog-post-list">
   @for (post of blogPosts(); track post._links.self.href) {
-    <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
+    <div class="blog-post">
+      <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
+    </div>
   }
 </div>
-<hr>
+<hr class="separator-75p-fading">
 <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
 
 @if (userCanGenerateBlogPosts) {

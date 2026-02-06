@@ -1,4 +1,4 @@
-import {Component, input, output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, input, output, viewChild} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 import {BlogPostDto} from "../blog-posts.model";
@@ -11,20 +11,25 @@ import {MarkdownRenderer} from '../../markdown-renderer/markdown-renderer';
   styleUrl: './blog-post-editor-form.scss',
   imports: [ReactiveFormsModule, TranslateModule, MarkdownRenderer],
 })
-export class BlogPostEditorForm {
+export class BlogPostEditorForm implements AfterViewInit {
   readonly submitLabel = input.required<string>();
+  readonly cancelClicked = output<void>();
   readonly submitClicked = output<BlogPostDto>();
 
-  form = new FormGroup({
+  private titleInput = viewChild.required<ElementRef<HTMLInputElement>>('titleInput');
+  private referenceValues?: Record<string, string>; // TODO is this the best way?
+
+  protected readonly form = new FormGroup({
     title: new FormControl('', Validators.required),
     summary: new FormControl(''),
     content: new FormControl(''),
     publicationTime: new FormControl(toDateTimePickerValueFormat(new Date()), Validators.required),
   });
+  protected contentTab: 'write' | 'preview' = 'write';
 
-  contentTab: 'write' | 'preview' = 'write';
-
-  private referenceValues?: Record<string, string>; // TODO is this the best way?
+  ngAfterViewInit(): void {
+    this.titleInput().nativeElement.focus();
+  }
 
   setFrom(data: BlogPostDto) {
     const values = {
@@ -44,6 +49,10 @@ export class BlogPostEditorForm {
     return Object.keys(this.referenceValues).some(
       key => (current[key as keyof typeof current] ?? '') !== this.referenceValues![key]
     );
+  }
+
+  handleCancelClicked() {
+    this.cancelClicked.emit();
   }
 
   handleSubmit() {

@@ -23,6 +23,10 @@ export class BlogPostCreator {
     return this.context.user().isAuthor;
   }
 
+  async handleCancel() {
+    await this.router.navigate(['/']);
+  }
+
   async handleSubmit(data: BlogPostDto) {
     this.backend.createBlogPost(data)
       .pipe(takeUntilDestroyed(this.destroyRef))

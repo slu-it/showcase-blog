@@ -1,24 +1,32 @@
+@if (showDeleteConfirmation) {
+  <app-confirmation-dialog
+    message="confirmation.deletePost"
+    (confirmed)="handleDeleteConfirmed()"
+    (cancelled)="handleDeleteCancelled()"/>
+}
 <div class="blog-post">
   <h1 class="title">
     {{ post().title }}
   </h1>
-  <p>
-    <span class="publicationTime">
+  <hr class="separator-100p-fading">
+  <div class="meta">
+    <div class="publicationTime">
       {{ post().publicationTime | date:"short" }}
-    </span>
+    </div>
     @if (blogPostCanBeEdited || blogPostCanBeDeleted) {
       <span class="actions">
         @if (blogPostCanBeEdited) {
-          <button class="action" (click)="handleEditClicked()">✏️</button>
+          <app-action-button (clicked)="handleEditClicked()" type="✏️"/>
         }
         @if (blogPostCanBeDeleted) {
-          <button class="action" (click)="handleDeleteClicked()">🗑️</button>
+          <app-action-button (clicked)="handleDeleteClicked()" type="🗑️"/>
         }
       </span>
     }
-  </p>
-  <hr>
+  </div>
+  <div class="content">
   @if (post().content) {
     <app-markdown-renderer [data]="post().content"/>
   }
+  </div>
 </div>

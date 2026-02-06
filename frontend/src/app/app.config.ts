@@ -10,7 +10,8 @@ import {provideRouter, TitleStrategy} from '@angular/router';
 import {provideTranslateService} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 
-import {provideMarkdown} from 'ngx-markdown';
+import {provideMarkdown, MARKED_OPTIONS, MarkedRenderer} from 'ngx-markdown';
+import {Tokens} from 'marked';
 
 import {routes} from './app.routes';
 import {TranslatedTitleStrategy} from './common/translated-title.strategy';
@@ -31,6 +32,24 @@ export const appConfig: ApplicationConfig = {
     }),
     {provide: TitleStrategy, useClass: TranslatedTitleStrategy},
     provideAppInitializer(() => inject(ContextService).refresh()),
-    provideMarkdown()
+    provideMarkdown({
+      markedOptions: {
+        provide: MARKED_OPTIONS,
+        useValue: {
+          renderer: (() => {
+            const renderer = new MarkedRenderer();
+            renderer.link = (token: Tokens.Link) => {
+              if (token.href.startsWith('http')) {
+                // assuming external link
+                return `<a href="${token.href}" target="_blank" rel="noopener noreferrer">${token.text} ⧉</a>`;
+              }
+              // assuming internal link
+              return `<a href="${token.href}">${token.text}</a>`;
+            };
+            return renderer;
+          })()
+        }
+      }
+    })
   ]
 };

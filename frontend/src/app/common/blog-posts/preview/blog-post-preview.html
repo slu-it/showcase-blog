@@ -1,27 +1,35 @@
+@if (showDeleteConfirmation) {
+  <app-confirmation-dialog
+    message="confirmation.deletePost"
+    (confirmed)="handleDeleteConfirmed()"
+    (cancelled)="handleDeleteCancelled()"/>
+}
 <div class="blog-post">
   <h1 class="title">
     <a class="title-link" routerLink="/view/{{post().uid}}">
       {{ post().title }}
     </a>
   </h1>
-  <p>
+  @if (post().summary) {
+    <p class="summary">
+      {{ post().summary }}
+    </p>
+  } @else {
+    <p>-</p>
+  }
+  <div class="meta">
     <span class="publicationTime">
       {{ post().publicationTime | date:"short" }}
     </span>
     @if (blogPostCanBeEdited || blogPostCanBeDeleted) {
       <span class="actions">
         @if (blogPostCanBeEdited) {
-          <button class="action" (click)="handleEditClicked()">✏️</button>
+          <app-action-button (clicked)="handleEditClicked()" type="✏️"/>
         }
         @if (blogPostCanBeDeleted) {
-          <button class="action" (click)="handleDeleteClicked()">🗑️</button>
+          <app-action-button (clicked)="handleDeleteClicked()" type="🗑️"/>
         }
       </span>
     }
-  </p>
-  @if (post().summary) {
-    <p class="summary">
-      {{ post().summary }}
-    </p>
-  }
+  </div>
 </div>
