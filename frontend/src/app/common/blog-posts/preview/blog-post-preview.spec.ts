@@ -2,17 +2,16 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {Component, LOCALE_ID} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {By} from '@angular/platform-browser';
+import {RouterModule} from '@angular/router';
 import {TranslateModule} from '@ngx-translate/core';
-import {BlogPostView} from './blog-post-view';
+import {BlogPostPreview} from './blog-post-preview';
 import {BlogPost} from '../blog-posts.model';
-import {ConfirmationDialog} from '../../confirmation-dialog/confirmation-dialog';
 import {ActionButton} from '../../action-button/action-button';
-import {MarkdownModule} from 'ngx-markdown';
+import {ConfirmationDialog} from '../../confirmation-dialog/confirmation-dialog';
 
 @Component({
-  template: `
-    <app-blog-post-view [post]="post" (editClicked)="onEdit($event)" (deleteClicked)="onDelete($event)"/>`,
-  imports: [BlogPostView],
+  template: `<app-blog-post-preview [post]="post" (editClicked)="onEdit($event)" (deleteClicked)="onDelete($event)" />`,
+  imports: [BlogPostPreview],
 })
 class TestHost {
   post: BlogPost = {
@@ -27,36 +26,33 @@ class TestHost {
   onDelete = jest.fn();
 }
 
-describe('BlogPostView', () => {
+describe('BlogPostPreview', () => {
   let fixture: ComponentFixture<TestHost>;
   let host: TestHost;
 
   const getTitle = () =>
     fixture.debugElement.query(By.css('.title')).nativeElement as HTMLElement;
-
+  const getTitleLink = () =>
+    fixture.debugElement.query(By.css('.title-link')).nativeElement as HTMLAnchorElement;
+  const getSummary = () =>
+    fixture.debugElement.query(By.css('.summary')).nativeElement as HTMLElement;
   const getPublicationTime = () =>
     fixture.debugElement.query(By.css('.publicationTime')).nativeElement as HTMLElement;
 
-  const getMarkdownRenderer = () =>
-    fixture.debugElement.query(By.css('app-markdown-renderer'));
-
   const getActionButtons = () =>
     fixture.debugElement.queryAll(By.directive(ActionButton));
-
   const getEditButton = () =>
     getActionButtons().find(btn => btn.componentInstance.type() === '✏️');
-
   const getDeleteButton = () =>
     getActionButtons().find(btn => btn.componentInstance.type() === '🗑️');
 
   const getConfirmationDialog = () =>
     fixture.debugElement.query(By.directive(ConfirmationDialog));
 
-  // Pin the locale to 'en-UK' so the DatePipe "short" format produces
-  // consistent output regardless of the machine's locale settings.
+  // Pin the locale to 'en-UK' to match the project convention.
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TestHost, TranslateModule.forRoot(), MarkdownModule.forRoot()],
+      imports: [TestHost, TranslateModule.forRoot(), RouterModule.forRoot([])],
       providers: [
         {provide: LOCALE_ID, useValue: 'en-UK'},
       ],
@@ -68,8 +64,19 @@ describe('BlogPostView', () => {
   });
 
   describe('rendering', () => {
-    it('should display the blog post title', () => {
+    it('should display the blog post title as a link to the view page', () => {
       expect(getTitle().textContent?.trim()).toBe('Test Post');
+      expect(getTitleLink().getAttribute('href')).toBe('/view/abc-123');
+    });
+
+    it('should display the summary when present', () => {
+      expect(getSummary().textContent?.trim()).toBe('A summary');
+    });
+
+    it('should display a dash when the summary is empty', () => {
+      host.post = {...host.post, summary: ''};
+      fixture.detectChanges();
+      expect(getSummary().textContent?.trim()).toBe('-');
     });
 
     it('should display the formatted publication time', () => {
@@ -79,17 +86,6 @@ describe('BlogPostView', () => {
         .transform('2025-06-15T14:30:00.000Z', 'short');
 
       expect(getPublicationTime().textContent?.trim()).toBe(expected);
-    });
-
-    it('should render the markdown content when present', () => {
-      expect(getMarkdownRenderer()).toBeTruthy();
-    });
-
-    it('should not render the markdown renderer when content is empty', () => {
-      host.post = {...host.post, content: ''};
-      fixture.detectChanges();
-
-      expect(getMarkdownRenderer()).toBeNull();
     });
   });
 
