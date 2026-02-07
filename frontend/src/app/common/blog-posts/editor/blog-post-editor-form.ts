@@ -19,7 +19,7 @@ export class BlogPostEditorForm implements AfterViewInit {
   private titleInput = viewChild.required<ElementRef<HTMLInputElement>>('titleInput');
   private referenceValues?: Record<string, string>; // TODO is this the best way?
 
-  protected readonly form = new FormGroup({
+  readonly form = new FormGroup({
     title: new FormControl('', Validators.required),
     summary: new FormControl(''),
     content: new FormControl(''),
@@ -58,8 +58,8 @@ export class BlogPostEditorForm implements AfterViewInit {
   handleSubmit() {
     this.submitClicked.emit({
       title: this.form.value.title!,
-      summary: this.form.value.summary || undefined,
-      content: this.form.value.content || undefined,
+      summary: this.form.value.summary ?? undefined,
+      content: this.form.value.content ?? undefined,
       publicationTime: toUtcIsoString(this.form.value.publicationTime!),
     });
   }
