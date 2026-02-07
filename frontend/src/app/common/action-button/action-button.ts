@@ -1,4 +1,5 @@
 import {Component, input, output} from '@angular/core';
+import {ActionType} from './action-button.model';
 
 @Component({
   selector: 'app-action-button',
