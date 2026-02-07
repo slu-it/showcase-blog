@@ -18,7 +18,7 @@ describe('ActionButton', () => {
   let host: TestHost;
 
   const getButton = () =>
-    fixture.debugElement.query(By.css('button')).nativeElement;
+    fixture.debugElement.query(By.css('button')).nativeElement as HTMLButtonElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
