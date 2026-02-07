@@ -10,13 +10,13 @@
       {{ post().title }}
     </a>
   </h1>
-  @if (post().summary) {
-    <p class="summary">
+  <p class="summary">
+    @if (post().summary) {
       {{ post().summary }}
-    </p>
-  } @else {
-    <p>-</p>
-  }
+    } @else {
+      -
+    }
+  </p>
   <div class="meta">
     <span class="publicationTime">
       {{ post().publicationTime | date:"short" }}
