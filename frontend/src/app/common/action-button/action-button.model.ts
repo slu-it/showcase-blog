@@ -1,1 +1,1 @@
-type ActionType = "✏️" | "🗑️";
+export type ActionType = "✏️" | "🗑️";
