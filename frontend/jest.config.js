@@ -14,5 +14,5 @@ module.exports = {
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1'
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)']
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|marked)']
 };
