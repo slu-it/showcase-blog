@@ -7,6 +7,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Pagination} from './pagination/pagination';
 import {TestDataGenerator} from '../../common/test-data-generator/test-data-generator';
 import {ContextService} from '../../common/context/context.service';
+import {TranslatePipe} from '@ngx-translate/core';
 
 const dummyPageInfo = {number: 1, size: 10, totalPages: 1, totalElements: 0};
 
@@ -14,7 +15,7 @@ const dummyPageInfo = {number: 1, size: 10, totalPages: 1, totalElements: 0};
   selector: 'app-v-blog-post-list',
   templateUrl: './blog-post-list.html',
   styleUrl: './blog-post-list.scss',
-  imports: [BlogPostPreview, Pagination, TestDataGenerator]
+  imports: [BlogPostPreview, Pagination, TestDataGenerator, TranslatePipe]
 })
 export class BlogPostList implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -39,6 +40,10 @@ export class BlogPostList implements OnInit {
   loadPage(pageNumber: number) {
     this.backend.getBlogPostsPage(pageNumber, this.pageInfo().size)
       .subscribe(page => this.setCurrentPage(page));
+  }
+
+  get thereAreBlogPosts(): boolean {
+    return this.blogPosts().length > 0;
   }
 
   get userCanGenerateBlogPosts(): boolean {

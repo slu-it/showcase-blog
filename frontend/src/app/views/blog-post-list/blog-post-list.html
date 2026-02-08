@@ -1,14 +1,22 @@
-<app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
-<hr class="separator-75p-fading">
-<div class="blog-post-list">
-  @for (post of blogPosts(); track post._links.self.href) {
-    <div class="blog-post">
-      <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
-    </div>
-  }
-</div>
-<hr class="separator-75p-fading">
-<app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+@if (thereAreBlogPosts) {
+  <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+  <hr class="separator-100p-fading">
+  <div class="blog-post-list">
+    @for (post of blogPosts(); track post._links.self.href) {
+      <div class="blog-post">
+        <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
+      </div>
+    }
+  </div>
+  <hr class="separator-100p-fading">
+  <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+} @else {
+  <hr class="separator-100p-fading">
+  <div class="empty-blog-post-list">
+    {{ 'views.blogPostList.thereAreNoBlogPosts' | translate }}
+  </div>
+  <hr class="separator-100p-fading">
+}
 
 @if (userCanGenerateBlogPosts) {
   <app-test-data-generator (generationCompleted)="reloadPage()"/>
