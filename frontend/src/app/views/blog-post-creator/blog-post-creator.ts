@@ -6,6 +6,8 @@ import {BlogPostEditorForm} from '../../common/blog-posts/editor/blog-post-edito
 import {Router} from '@angular/router';
 import {ErrorState} from '../../common/error-state/error-state';
 import {ContextService} from '../../common/context/context.service';
+import {currentLocationWasReachedNavigatingTheApplication} from '../../common/navigation.functions';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-v-blog-post-creator',
@@ -18,13 +20,18 @@ export class BlogPostCreator {
   private router = inject(Router);
   private context = inject(ContextService);
   private backend = inject(BlogPostsService);
+  private location = inject(Location);
 
   get userCanCreateBlogPosts(): boolean {
     return this.context.user().isAuthor;
   }
 
   async handleCancel() {
-    await this.router.navigate(['/']);
+    if (currentLocationWasReachedNavigatingTheApplication(this.location)) {
+      this.location.back();
+    } else {
+      await this.router.navigate(['/']);
+    }
   }
 
   async handleSubmit(data: BlogPostDto) {
