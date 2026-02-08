@@ -1,5 +1,5 @@
 @if (thereAreBlogPosts) {
-  <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+  <app-pagination [page]="pageInfo()" (pageChanged)="switchPage($event)"/>
   <hr class="separator-100p-fading">
   <div class="blog-post-list">
     @for (post of blogPosts(); track post._links.self.href) {
@@ -9,7 +9,7 @@
     }
   </div>
   <hr class="separator-100p-fading">
-  <app-pagination [page]="pageInfo()" (pageChanged)="loadPage($event)"/>
+  <app-pagination [page]="pageInfo()" (pageChanged)="switchPage($event)"/>
 } @else {
   <hr class="separator-100p-fading">
   <div class="empty-blog-post-list">

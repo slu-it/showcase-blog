@@ -96,7 +96,9 @@ describe('BlogPostList', () => {
 
       findPaginations()[0].componentInstance.pageChanged.emit(3);
 
-      expect(backend.getBlogPostsPage).toHaveBeenCalledWith(3, 10);
+      expect(router.navigate).toHaveBeenCalledWith([''], {
+        queryParams: { pageNumber: 3, pageSize: 10 }
+      });
     });
   });
 

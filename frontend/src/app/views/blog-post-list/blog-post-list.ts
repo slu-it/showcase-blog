@@ -1,7 +1,7 @@
 import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {BlogPost, BlogPostsPage, PageInfo} from '../../common/blog-posts/blog-posts.model';
 import {BlogPostsService} from '../../common/blog-posts/blog-posts.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BlogPostPreview} from '../../common/blog-posts/preview/blog-post-preview';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Pagination} from './pagination/pagination';
@@ -22,6 +22,7 @@ export class BlogPostList implements OnInit {
   private readonly context = inject(ContextService);
   private readonly backend = inject(BlogPostsService);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   private readonly _blogPosts = signal<BlogPost[]>([]);
   protected readonly blogPosts = this._blogPosts.asReadonly();
@@ -30,16 +31,13 @@ export class BlogPostList implements OnInit {
   protected readonly pageInfo = this._pageInfo.asReadonly();
 
   ngOnInit() {
-    this.loadPage(1);
-  }
-
-  reloadPage() {
-    this.loadPage(this.pageInfo().number);
-  }
-
-  loadPage(pageNumber: number) {
-    this.backend.getBlogPostsPage(pageNumber, this.pageInfo().size)
-      .subscribe(page => this.setCurrentPage(page));
+    this.route.queryParamMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        const pageNumber = Number(params.get('pageNumber')) || 1;
+        const pageSize = Number(params.get('pageSize')) || 10;
+        this.loadPage(pageNumber, pageSize);
+      });
   }
 
   get thereAreBlogPosts(): boolean {
@@ -55,6 +53,11 @@ export class BlogPostList implements OnInit {
     this._blogPosts.update(() => page._embedded?.blogPosts ?? []);
   }
 
+  async switchPage(pageNumber: number) {
+    const extras = {queryParams: {pageNumber: pageNumber, pageSize: this.pageInfo().size}};
+    await this.router.navigate([''], extras);
+  }
+
   async editPost(uid: string) {
     await this.router.navigate(['/edit', uid]);
   }
@@ -63,10 +66,19 @@ export class BlogPostList implements OnInit {
     this.backend.deleteBlogPost(uid)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: () => this.loadPage(this.pageInfo().number),
+        next: () => this.reloadPage(),
         error: () => {
           /* already handled by backend service */
         },
       });
+  }
+
+  reloadPage() {
+    this.loadPage(this.pageInfo().number);
+  }
+
+  private loadPage(pageNumber: number, pageSize: number = this.pageInfo().size) {
+    this.backend.getBlogPostsPage(pageNumber, pageSize)
+      .subscribe(page => this.setCurrentPage(page));
   }
 }
