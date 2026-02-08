@@ -17,7 +17,7 @@ export class BlogPostViewer implements OnInit {
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private backend = inject(BlogPostsService);
+  private service = inject(BlogPostsService);
 
   protected post?: BlogPost;
   protected errorStatus?: number;
@@ -40,13 +40,8 @@ export class BlogPostViewer implements OnInit {
   }
 
   async deletePost(uid: string) {
-    this.backend.deleteBlogPost(uid)
+    this.service.deleteBlogPost(uid)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => this.router.navigate(['/']),
-        error: () => {
-          /* already handled by backend service */
-        },
-      });
+      .subscribe(() => this.router.navigate(['/']));
   }
 }
