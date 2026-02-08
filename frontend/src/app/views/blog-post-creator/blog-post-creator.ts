@@ -16,11 +16,11 @@ import {Location} from '@angular/common';
   imports: [BlogPostEditorForm, ErrorState],
 })
 export class BlogPostCreator {
-  private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
-  private context = inject(ContextService);
-  private service = inject(BlogPostsService);
-  private location = inject(Location);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly context = inject(ContextService);
+  private readonly service = inject(BlogPostsService);
+  private readonly location = inject(Location);
 
   get userCanCreateBlogPosts(): boolean {
     return this.context.user().isAuthor;

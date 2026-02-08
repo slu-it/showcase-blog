@@ -5,8 +5,8 @@ import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({providedIn: 'root'})
 export class TranslatedTitleStrategy extends TitleStrategy {
-  private title = inject(Title);
-  private translate = inject(TranslateService);
+  private readonly title = inject(Title);
+  private readonly translate = inject(TranslateService);
 
   constructor() {
     super();

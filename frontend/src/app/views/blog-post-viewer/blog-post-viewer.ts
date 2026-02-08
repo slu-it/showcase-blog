@@ -14,10 +14,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   imports: [ErrorState, TranslateModule, BlogPostView],
 })
 export class BlogPostViewer implements OnInit {
-  private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private service = inject(BlogPostsService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly service = inject(BlogPostsService);
 
   protected post?: BlogPost;
   protected errorStatus?: number;

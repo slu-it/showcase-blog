@@ -10,7 +10,7 @@ import {Notification} from './notifications.model';
   imports: [NotificationMessage]
 })
 export class NotificationsContainer {
-  private notificationService = inject(NotificationsService);
+  private readonly notificationService = inject(NotificationsService);
 
   get getNotifications(): Signal<Notification[]> {
     return this.notificationService.notifications;

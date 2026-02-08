@@ -18,13 +18,13 @@ import {currentLocationWasReachedNavigatingTheApplication} from '../../common/na
   imports: [BlogPostEditorForm, ErrorState, TranslateModule],
 })
 export class BlogPostEditor implements OnInit, AfterViewInit {
-  private destroyRef = inject(DestroyRef);
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
-  private context = inject(ContextService);
-  private service = inject(BlogPostsService);
-  private location = inject(Location);
-  private editor = viewChild(BlogPostEditorForm);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly context = inject(ContextService);
+  private readonly service = inject(BlogPostsService);
+  private readonly location = inject(Location);
+  private readonly editor = viewChild(BlogPostEditorForm);
 
   private originalData?: BlogPost;
   protected errorStatus?: number;
