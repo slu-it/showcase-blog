@@ -30,14 +30,18 @@ const page: BlogPostsPage = {
   page: {size: 10, totalElements: 2, totalPages: 1, number: 1},
 };
 
+const emptyPage: BlogPostsPage = {
+  page: {size: 10, totalElements: 0, totalPages: 1, number: 1},
+};
+
 describe('BlogPostList', () => {
   let fixture: ComponentFixture<BlogPostList>;
   let router: Router;
   let backend: { getBlogPostsPage: jest.Mock; deleteBlogPost: jest.Mock };
 
-  const setupWithUser = async (isAdmin: boolean) => {
+  const setupWithUser = async (isAdmin: boolean, responsePage: BlogPostsPage = page) => {
     backend = {
-      getBlogPostsPage: jest.fn().mockReturnValue(of(page)),
+      getBlogPostsPage: jest.fn().mockReturnValue(of(responsePage)),
       deleteBlogPost: jest.fn(),
     };
 
@@ -66,6 +70,9 @@ describe('BlogPostList', () => {
 
   const findTestDataGenerator = () =>
     fixture.debugElement.query(By.directive(TestDataGenerator));
+
+  const findEmptyMessage = () =>
+    fixture.debugElement.query(By.css('.empty-blog-post-list'));
 
   describe('loading', () => {
     it('should load page 1 on init', async () => {
@@ -123,6 +130,32 @@ describe('BlogPostList', () => {
 
       expect(backend.deleteBlogPost).toHaveBeenCalledWith('post-1');
       expect(backend.getBlogPostsPage).toHaveBeenCalledWith(1, 10);
+    });
+  });
+
+  describe('empty blog post list', () => {
+    it('should show empty message when there are no blog posts', async () => {
+      await setupWithUser(false, emptyPage);
+
+      expect(findEmptyMessage()).toBeTruthy();
+    });
+
+    it('should not show blog post previews when there are no blog posts', async () => {
+      await setupWithUser(false, emptyPage);
+
+      expect(findPreviews()).toHaveLength(0);
+    });
+
+    it('should not show pagination when there are no blog posts', async () => {
+      await setupWithUser(false, emptyPage);
+
+      expect(findPaginations()).toHaveLength(0);
+    });
+
+    it('should not show empty message when there are blog posts', async () => {
+      await setupWithUser(false);
+
+      expect(findEmptyMessage()).toBeNull();
     });
   });
 

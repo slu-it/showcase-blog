@@ -50,5 +50,10 @@
     "yes": "Sí",
     "no": "No",
     "deletePost": "¿Realmente desea eliminar esta publicación?"
+  },
+  "views": {
+    "blogPostList": {
+      "thereAreNoBlogPosts": "Aún no hay publicaciones.\n¡Crea una para verla listada aquí!"
+    }
   }
 }

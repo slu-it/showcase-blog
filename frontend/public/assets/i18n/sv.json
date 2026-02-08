@@ -50,5 +50,10 @@
     "yes": "Ja",
     "no": "Nej",
     "deletePost": "Vill du verkligen ta bort det här blogginlägget?"
+  },
+  "views": {
+    "blogPostList": {
+      "thereAreNoBlogPosts": "Det finns inga blogginlägg än.\nSkapa ett för att se det listat här!"
+    }
   }
 }

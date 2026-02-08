@@ -8,10 +8,12 @@ export interface BlogPost {
 }
 
 export interface BlogPostsPage {
-  _embedded: {
-    blogPosts: BlogPost[];
-  };
+  _embedded?: BlogPostsEmbedded;
   page: PageInfo;
+}
+
+export interface BlogPostsEmbedded {
+  blogPosts: BlogPost[];
 }
 
 export interface BlogPostLinks {
