@@ -14,8 +14,8 @@ export class App {
   private static readonly SUPPORTED_LANGUAGES = /^(en|de|es|sv)$/;
   private static readonly LANGUAGE_STORAGE_KEY = 'lang';
 
-  private translate = inject(TranslateService);
-  private context = inject(ContextService);
+  private readonly translate = inject(TranslateService);
+  private readonly context = inject(ContextService);
 
   currentLang: string;
 
