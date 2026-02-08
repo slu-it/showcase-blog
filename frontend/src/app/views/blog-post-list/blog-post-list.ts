@@ -20,7 +20,7 @@ const dummyPageInfo = {number: 1, size: 10, totalPages: 1, totalElements: 0};
 export class BlogPostList implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly context = inject(ContextService);
-  private readonly backend = inject(BlogPostsService);
+  private readonly service = inject(BlogPostsService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
@@ -63,14 +63,9 @@ export class BlogPostList implements OnInit {
   }
 
   deletePost(uid: string) {
-    this.backend.deleteBlogPost(uid)
+    this.service.deleteBlogPost(uid)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: () => this.reloadPage(),
-        error: () => {
-          /* already handled by backend service */
-        },
-      });
+      .subscribe(() => this.reloadPage());
   }
 
   reloadPage() {
@@ -78,7 +73,7 @@ export class BlogPostList implements OnInit {
   }
 
   private loadPage(pageNumber: number, pageSize: number = this.pageInfo().size) {
-    this.backend.getBlogPostsPage(pageNumber, pageSize)
+    this.service.getBlogPostsPage(pageNumber, pageSize)
       .subscribe(page => this.setCurrentPage(page));
   }
 }

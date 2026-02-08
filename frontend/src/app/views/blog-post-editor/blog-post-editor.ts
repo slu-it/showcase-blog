@@ -22,7 +22,7 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private context = inject(ContextService);
-  private backend = inject(BlogPostsService);
+  private service = inject(BlogPostsService);
   private location = inject(Location);
   private editor = viewChild(BlogPostEditorForm);
 
@@ -79,13 +79,8 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
 
     if (Object.keys(update).length === 0) return;
 
-    this.backend.updateBlogPost(this.originalData!.uid, update)
+    this.service.updateBlogPost(this.originalData!.uid, update)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: response => this.router.navigate(['/view', response.uid]),
-        error: () => {
-          /* already handled by backend service */
-        },
-      });
+      .subscribe(response => this.router.navigate(['/view', response.uid]));
   }
 }

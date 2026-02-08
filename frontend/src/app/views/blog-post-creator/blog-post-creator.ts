@@ -19,7 +19,7 @@ export class BlogPostCreator {
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   private context = inject(ContextService);
-  private backend = inject(BlogPostsService);
+  private service = inject(BlogPostsService);
   private location = inject(Location);
 
   get userCanCreateBlogPosts(): boolean {
@@ -35,13 +35,8 @@ export class BlogPostCreator {
   }
 
   async handleSubmit(data: BlogPostDto) {
-    this.backend.createBlogPost(data)
+    this.service.createBlogPost(data)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: response => this.router.navigate(['/view', response.uid]),
-        error: () => {
-          /* already handled by backend service */
-        },
-      });
+      .subscribe(response => this.router.navigate(['/view', response.uid]));
   }
 }
