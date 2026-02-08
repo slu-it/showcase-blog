@@ -1,3 +1,4 @@
+import {Location} from '@angular/common';
 import {AfterViewInit, Component, DestroyRef, inject, OnInit, viewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -8,6 +9,7 @@ import {BlogPostEditorForm} from '../../common/blog-posts/editor/blog-post-edito
 import {ErrorState} from '../../common/error-state/error-state';
 import {truncateIsoStringToMinutes} from '../../common/time.functions';
 import {ContextService} from '../../common/context/context.service';
+import {currentLocationWasReachedNavigatingTheApplication} from '../../common/navigation.functions';
 
 @Component({
   selector: 'app-v-blog-post-editor',
@@ -21,6 +23,7 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   private context = inject(ContextService);
   private backend = inject(BlogPostsService);
+  private location = inject(Location);
   private editor = viewChild(BlogPostEditorForm);
 
   private originalData?: BlogPost;
@@ -50,8 +53,11 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
   }
 
   async handleCancel() {
-    const original = this.originalData!;
-    await this.router.navigate(['/view', original.uid]);
+    if (currentLocationWasReachedNavigatingTheApplication(this.location)) {
+      this.location.back();
+    } else {
+      await this.router.navigate(['/view', this.originalData!.uid]);
+    }
   }
 
   async handleSubmit(data: BlogPostDto) {
