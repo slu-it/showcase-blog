@@ -5,28 +5,34 @@
     (cancelled)="handleDeleteCancelled()"/>
 }
 <div class="blog-post">
-  <h1 class="title">
+  <div class="title">
     {{ post().title }}
-  </h1>
-  <hr class="separator-100p-fading">
+  </div>
   <div class="meta">
-    <div class="publicationTime">
-      {{ post().publicationTime | date:"short" }}
+    <div class="meta-left">
+      &nbsp;
     </div>
-    @if (blogPostCanBeEdited || blogPostCanBeDeleted) {
-      <span class="actions">
-        @if (blogPostCanBeEdited) {
-          <app-action-button (clicked)="handleEditClicked()" type="✏️"/>
-        }
-        @if (blogPostCanBeDeleted) {
-          <app-action-button (clicked)="handleDeleteClicked()" type="🗑️"/>
-        }
+    <div class="meta-center">
+      <span class="publicationTime">
+        {{ post().publicationTime | date:"short" }}
       </span>
-    }
+    </div>
+    <div class="meta-right">
+      @if (blogPostCanBeEdited || blogPostCanBeDeleted) {
+        <span class="actions">
+          @if (blogPostCanBeEdited) {
+            <app-action-button (clicked)="handleEditClicked()" type="✏️"/>
+          }
+          @if (blogPostCanBeDeleted) {
+            <app-action-button (clicked)="handleDeleteClicked()" type="🗑️"/>
+          }
+        </span>
+      }
+    </div>
   </div>
   <div class="content">
-  @if (post().content) {
-    <app-markdown-renderer [data]="post().content"/>
-  }
+    @if (post().content) {
+      <app-markdown-renderer [data]="post().content"/>
+    }
   </div>
 </div>

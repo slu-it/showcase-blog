@@ -5,7 +5,6 @@
   }
 </nav>
 <div class="language-switcher">
-  <label for="language">{{ 'language.label' | translate }}</label>
   <select id="language" [value]="currentLang" (change)="switchLanguage($any($event.target).value)">
     <option value="de">{{ 'language.de' | translate }}</option>
     <option value="en">{{ 'language.en' | translate }}</option>

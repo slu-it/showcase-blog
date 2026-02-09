@@ -5,19 +5,19 @@
     (cancelled)="handleDeleteCancelled()"/>
 }
 <div class="blog-post">
-  <h1 class="title">
+  <div class="title">
     <a class="title-link" routerLink="/view/{{post().uid}}">
       {{ post().title }}
     </a>
-  </h1>
-  <p class="summary">
+  </div>
+  <div class="summary">
     @if (post().summary) {
       {{ post().summary }}
     } @else {
       -
     }
-  </p>
-  <div class="meta">
+  </div>
+  <div class="footer">
     <span class="publicationTime">
       {{ post().publicationTime | date:"short" }}
     </span>
