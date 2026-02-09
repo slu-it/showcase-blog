@@ -1,15 +1,15 @@
 import {Component, input, output} from '@angular/core';
 import {BlogPost} from "../blog-posts.model";
 import {DatePipe} from '@angular/common';
-import {RouterLink} from '@angular/router';
 import {ActionButton} from '../../action-button/action-button';
 import {ConfirmationDialog} from '../../confirmation-dialog/confirmation-dialog';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-blog-post-preview',
   templateUrl: './blog-post-preview.html',
   styleUrl: './blog-post-preview.scss',
-  imports: [DatePipe, RouterLink, ActionButton, ConfirmationDialog],
+  imports: [DatePipe, ActionButton, ConfirmationDialog, RouterLink],
 })
 export class BlogPostPreview {
 

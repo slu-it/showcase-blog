@@ -4,7 +4,11 @@
   <div class="blog-post-list">
     @for (post of blogPosts(); track post._links.self.href) {
       <div class="blog-post">
-        <app-blog-post-preview [post]="post" (editClicked)="editPost(post.uid)" (deleteClicked)="deletePost(post.uid)"/>
+        <app-blog-post-preview
+          [post]="post"
+          (editClicked)="editPost($event)"
+          (deleteClicked)="deletePost($event)"
+        />
       </div>
     }
   </div>

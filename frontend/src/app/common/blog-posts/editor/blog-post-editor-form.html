@@ -37,10 +37,10 @@
                 (click)="contentTab = 'preview'">{{ 'editor.preview' | translate }}</button>
       </div>
       @if (contentTab === 'write') {
-        <textarea #contentInput id="content" class="content" formControlName="content" rows="25"
+        <textarea #contentInput id="content" formControlName="content" rows="25"
                   [class.invalid]="form.controls.content.invalid"></textarea>
       } @else if (contentTab === 'preview') {
-        <app-markdown-renderer class="preview" [data]="form.value.content ?? ''"/>
+        <app-markdown-renderer id="preview" [data]="form.value.content ?? ''"/>
       }
     </div>
   </div>

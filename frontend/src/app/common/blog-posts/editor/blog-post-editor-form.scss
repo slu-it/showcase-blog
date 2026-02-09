@@ -5,6 +5,13 @@ form {
   align-items: start;
 }
 
+input,
+textarea {
+  &.invalid {
+    border-color: var(--border-invalid-color);
+  }
+}
+
 .form-field {
   display: contents;
 
@@ -25,68 +32,65 @@ form {
   label[for="content"] {
     padding-top: 0.35rem;
   }
+}
 
-  input,
-  textarea {
-    &.invalid {
-      border-color: red;
-    }
-  }
+#title {
 
-  input[type="datetime-local"] {
-    justify-self: start;
-  }
+}
 
-  #summary {
-    height: 100px;
-    overflow-y: auto;
-    resize: none;
-  }
+#summary {
+  height: 100px;
+  overflow-y: auto;
+  resize: none;
+}
 
-  .content-tabbed {
+#publicationTime {
+  justify-self: start;
+}
+
+#content, #preview {
+  border: none;
+  padding: 0.5rem;
+  height: 400px;
+  overflow-y: auto;
+  resize: none;
+  outline: none;
+}
+
+.content-tabbed {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  background: var(--light-background-color);
+
+  .tab-bar {
     display: flex;
-    flex-direction: column;
-    border: 1px solid #bbbbbb;
-    background: #ffffff;
+    flex-direction: row;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--dark-background-color);
 
-    .tab-bar {
-      display: flex;
-      flex-direction: row;
-      border-bottom: 1px solid #bbbbbb;
-      background-color: #f0f0f0;
-
-      .tab {
-        appearance: none;
-        background: none;
-        border: none;
-        padding: 0.5rem 0.75rem;
-        cursor: pointer;
-        color: #888888;
-        font-size: inherit;
-        border-radius: 0;
-
-        &.active {
-          color: #000000;
-          font-weight: bold;
-          box-shadow: inset 0 -1px 0 #666666;
-          background-color: #ffffff;
-        }
-      }
-    }
-
-    .content, .preview {
+    .tab {
+      appearance: none;
+      background: none;
       border: none;
-      padding: 0.5rem;
-      height: 400px;
-      overflow-y: auto;
-      resize: none;
-      outline: none;
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      color: color-mix(in srgb, var(--font-color) 60%, white);
+      font-size: inherit;
+      border-radius: 0;
+
+      &.active {
+        color: var(--font-color);
+        font-weight: bold;
+        background-color: var(--light-background-color);
+      }
     }
   }
 }
 
 .buttons {
   grid-column: 1 / -1;
+
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;

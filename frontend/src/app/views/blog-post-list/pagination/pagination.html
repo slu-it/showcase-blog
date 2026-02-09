@@ -1,7 +1,9 @@
-<div class="pagination">
-  <button data-testid="first" [disabled]="!hasPreviousPage" (click)="handleFirstClicked()">＜＜</button>
-  <button data-testid="previous" [disabled]="!hasPreviousPage" (click)="handlePreviousClicked()">＜</button>
-  <span data-testid="page-display">{{ page().number }}/{{ page().totalPages }}</span>
-  <button data-testid="next" [disabled]="!hasNextPage" (click)="handleNextClicked()">＞</button>
-  <button data-testid="last" [disabled]="!hasNextPage" (click)="handleLastClicked()">＞＞</button>
+<div class="container">
+  <span class="pagination">
+    <button data-testid="first" [disabled]="!hasPreviousPage" (click)="handleFirstClicked()">＜＜</button>
+    <button data-testid="previous" [disabled]="!hasPreviousPage" (click)="handlePreviousClicked()">＜</button>
+    <span data-testid="page-display">{{ page().number }}/{{ page().totalPages }}</span>
+    <button data-testid="next" [disabled]="!hasNextPage" (click)="handleNextClicked()">＞</button>
+    <button data-testid="last" [disabled]="!hasNextPage" (click)="handleLastClicked()">＞＞</button>
+  </span>
 </div>
