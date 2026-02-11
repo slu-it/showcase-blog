@@ -1,8 +1,19 @@
 form {
+  overflow: hidden;
+
+  border-style: solid;
+  border-color: var(--border-color);
+  border-width: 2px;
+  border-radius: 1rem;
+
+  background-color: var(--light-background-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1rem;
   align-items: start;
+  padding: 1.5rem;
 }
 
 input,
@@ -35,16 +46,18 @@ textarea {
 }
 
 #title {
-
+  border-radius: 0.5rem;
 }
 
 #summary {
+  border-radius: 0.5rem;
   height: 100px;
   overflow-y: auto;
   resize: none;
 }
 
 #publicationTime {
+  border-radius: 0.5rem;
   justify-self: start;
 }
 
@@ -61,6 +74,8 @@ textarea {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  overflow: hidden;
   background: var(--light-background-color);
 
   .tab-bar {
@@ -94,4 +109,7 @@ textarea {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
+
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
 }
