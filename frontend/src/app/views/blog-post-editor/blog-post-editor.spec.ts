@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 import {BlogPostEditor} from './blog-post-editor';
 import {BlogPostsService} from '../../common/blog-posts/blog-posts.service';
@@ -205,6 +205,22 @@ describe('BlogPostEditor', () => {
       findEditorForm().componentInstance.submitClicked.emit(dto);
 
       expect(backend.updateBlogPost).toHaveBeenCalledWith('abc-123', {content: null});
+    });
+
+    it('should not break when the service returns an error', async () => {
+      await setup({isAuthor: true, resolvedData: originalPost});
+      backend.updateBlogPost.mockReturnValue(throwError(() => ({status: 500})));
+
+      const dto: BlogPostDto = {
+        title: 'Updated Title',
+        summary: 'Original summary',
+        content: 'Original content',
+        publicationTime: '2025-06-15T14:30:00.000Z',
+      };
+      findEditorForm().componentInstance.submitClicked.emit(dto);
+
+      expect(backend.updateBlogPost).toHaveBeenCalledWith('abc-123', {title: 'Updated Title'});
+      expect(router.navigate).not.toHaveBeenCalled();
     });
 
     it('should not detect a change when both original and submitted summary are empty', async () => {
