@@ -37,6 +37,11 @@ export class BlogPostCreator {
   async handleSubmit(data: BlogPostDto) {
     this.service.createBlogPost(data)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(response => this.router.navigate(['/view', response.uid]));
+      .subscribe({
+        next: response => this.router.navigate(['/view', response.uid]),
+        error: () => {
+          /* The service already triggers a notification, and we don't want to break here. */
+        },
+      });
   }
 }
