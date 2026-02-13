@@ -65,7 +65,12 @@ export class BlogPostList implements OnInit {
   deletePost(uid: string) {
     this.service.deleteBlogPost(uid)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.reloadPage());
+      .subscribe({
+        next: () => this.reloadPage(),
+        error: () => {
+          /* The service already triggers a notification, and we don't want to break here. */
+        },
+      });
   }
 
   reloadPage() {

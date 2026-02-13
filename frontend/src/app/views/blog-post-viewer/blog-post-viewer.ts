@@ -42,6 +42,11 @@ export class BlogPostViewer implements OnInit {
   async deletePost(uid: string) {
     this.service.deleteBlogPost(uid)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.router.navigate(['/']));
+      .subscribe({
+        next: () => this.router.navigate(['/']),
+        error: () => {
+          /* The service already triggers a notification, and we don't want to break here. */
+        },
+      });
   }
 }

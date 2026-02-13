@@ -81,6 +81,11 @@ export class BlogPostEditor implements OnInit, AfterViewInit {
 
     this.service.updateBlogPost(this.originalData!.uid, update)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(response => this.router.navigate(['/view', response.uid]));
+      .subscribe({
+        next: response => this.router.navigate(['/view', response.uid]),
+        error: () => {
+          /* The service already triggers a notification, and we don't want to break here. */
+        },
+      });
   }
 }
