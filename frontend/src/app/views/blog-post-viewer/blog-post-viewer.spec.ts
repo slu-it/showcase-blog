@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {ActivatedRoute, Router} from '@angular/router';
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 import {MarkdownModule} from 'ngx-markdown';
 import {BlogPostViewer} from './blog-post-viewer';
@@ -83,6 +83,16 @@ describe('BlogPostViewer', () => {
 
       expect(backend.deleteBlogPost).toHaveBeenCalledWith('abc-123');
       expect(router.navigate).toHaveBeenCalledWith(['/']);
+    });
+
+    it('should not break when the service returns an error', async () => {
+      await setup(post);
+      backend.deleteBlogPost.mockReturnValue(throwError(() => ({status: 500})));
+
+      findBlogPostView().componentInstance.deleteClicked.emit('abc-123');
+
+      expect(backend.deleteBlogPost).toHaveBeenCalledWith('abc-123');
+      expect(router.navigate).not.toHaveBeenCalled();
     });
   });
 });

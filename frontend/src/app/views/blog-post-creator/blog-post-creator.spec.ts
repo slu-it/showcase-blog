@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {Router} from '@angular/router';
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 import {BlogPostCreator} from './blog-post-creator';
 import {BlogPostsService} from '../../common/blog-posts/blog-posts.service';
@@ -81,6 +81,18 @@ describe('BlogPostCreator', () => {
 
       expect(backend.createBlogPost).toHaveBeenCalledWith(dto);
       expect(router.navigate).toHaveBeenCalledWith(['/view', 'new-123']);
+    });
+
+    it('should not break when the service returns an error', async () => {
+      await setupWithUser(true);
+
+      const dto: BlogPostDto = {title: 'New Post', publicationTime: '2025-06-15T14:30:00.000Z'};
+      backend.createBlogPost.mockReturnValue(throwError(() => ({status: 500})));
+
+      findEditorForm().componentInstance.submitClicked.emit(dto);
+
+      expect(backend.createBlogPost).toHaveBeenCalledWith(dto);
+      expect(router.navigate).not.toHaveBeenCalled();
     });
   });
 });

@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {Router, RouterModule} from '@angular/router';
-import {of} from 'rxjs';
+import {of, throwError} from 'rxjs';
 import {TranslateModule} from '@ngx-translate/core';
 import {provideHttpClient} from '@angular/common/http';
 import {provideHttpClientTesting} from '@angular/common/http/testing';
@@ -132,6 +132,17 @@ describe('BlogPostList', () => {
 
       expect(backend.deleteBlogPost).toHaveBeenCalledWith('post-1');
       expect(backend.getBlogPostsPage).toHaveBeenCalledWith(1, 10);
+    });
+
+    it('should not break when the service returns an error', async () => {
+      await setupWithUser(false);
+      backend.deleteBlogPost.mockReturnValue(throwError(() => ({status: 500})));
+      backend.getBlogPostsPage.mockClear();
+
+      findPreviews()[0].componentInstance.deleteClicked.emit('post-1');
+
+      expect(backend.deleteBlogPost).toHaveBeenCalledWith('post-1');
+      expect(backend.getBlogPostsPage).not.toHaveBeenCalled();
     });
   });
 
