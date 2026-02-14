@@ -26,6 +26,7 @@ class SecurityConfiguration {
             csrf { disable() }
             authorizeHttpRequests {
                 authorize("/api/**", hasRole("USER"))
+                authorize("/docs/**", hasRole("ADMIN"))
                 authorize("/error", permitAll)
                 authorize(anyRequest, denyAll)
             }

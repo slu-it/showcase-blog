@@ -1,0 +1,150 @@
+= Blog Post API
+:doctype: book
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+== Overview
+
+The Blog Post API provides CRUD operations for managing blog posts.
+All endpoints require authentication via OAuth2 JWT tokens.
+
+=== HTTP Status Codes
+
+The API uses the following HTTP status codes:
+
+|===
+| Status Code | Description
+
+| `200 OK`
+| The request was successful. Returned for GET and PATCH operations.
+
+| `201 Created`
+| A new resource was successfully created. Returned for POST operations.
+
+| `204 No Content`
+| The request was successful but there is no content to return. Returned for DELETE operations.
+
+| `401 Unauthorized`
+| The request lacks valid authentication credentials. A valid OAuth2 JWT token must be provided.
+
+| `403 Forbidden`
+| The authenticated user does not have the required role to access the resource. Endpoints that modify data require the `AUTHOR` role, while read-only endpoints require the `USER` role.
+
+| `404 Not Found`
+| The requested resource does not exist.
+|===
+
+== Resources
+
+=== Create a Blog Post
+
+Creates a new blog post. Requires the `AUTHOR` role.
+
+==== HTTP Request
+
+include::{snippets}/create-blog-post/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/create-blog-post/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/create-blog-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/create-blog-post/response-fields.adoc[]
+
+==== Links
+
+include::{snippets}/create-blog-post/links.adoc[]
+
+=== Update a Blog Post
+
+Partially updates an existing blog post. Only the provided fields are updated. Requires the `AUTHOR` role.
+
+==== Path Parameters
+
+include::{snippets}/update-blog-post/path-parameters.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/update-blog-post/http-request.adoc[]
+
+==== Request Fields
+
+include::{snippets}/update-blog-post/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/update-blog-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/update-blog-post/response-fields.adoc[]
+
+==== Links
+
+include::{snippets}/update-blog-post/links.adoc[]
+
+=== Delete a Blog Post
+
+Deletes a blog post. Requires the `AUTHOR` role.
+
+==== Path Parameters
+
+include::{snippets}/delete-blog-post/path-parameters.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/delete-blog-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/delete-blog-post/http-response.adoc[]
+
+=== Get a Blog Post
+
+Retrieves a single blog post by its unique identifier. Requires the `USER` role. Authors will see additional links for modifying the resource.
+
+==== Path Parameters
+
+include::{snippets}/get-blog-post/path-parameters.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/get-blog-post/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/get-blog-post/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/get-blog-post/response-fields.adoc[]
+
+==== Links
+
+include::{snippets}/get-blog-post/links.adoc[]
+
+=== Get Blog Posts
+
+Retrieves a paginated list of blog posts. Requires the `USER` role. The response does not include the full content of each blog post. Authors will see additional links for modifying each resource.
+
+==== Query Parameters
+
+include::{snippets}/get-blog-posts/query-parameters.adoc[]
+
+==== HTTP Request
+
+include::{snippets}/get-blog-posts/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/get-blog-posts/http-response.adoc[]
+
+==== Response Fields
+
+include::{snippets}/get-blog-posts/response-fields.adoc[]

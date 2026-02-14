@@ -4,7 +4,10 @@ plugins {
     kotlin("jvm") version "2.2.21"
     kotlin("plugin.spring") version "2.2.21"
     id("io.gitlab.arturbosch.detekt") version "1.23.8"
+    id("org.asciidoctor.jvm.convert") version "4.0.5"
 }
+
+extra["snippetsDir"] = file("build/generated-snippets")
 
 repositories {
     mavenCentral()
@@ -30,6 +33,7 @@ dependencies {
     implementation("tools.jackson.module:jackson-module-kotlin")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
+    testImplementation("org.springframework.boot:spring-boot-restdocs")
     testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
     testImplementation("org.springframework.boot:spring-boot-starter-hateoas-test")
     testImplementation("org.springframework.boot:spring-boot-starter-jdbc-test")
@@ -37,6 +41,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-security-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.testcontainers:testcontainers-postgresql")
     testImplementation("com.ninja-squad:springmockk")
@@ -64,7 +69,14 @@ tasks {
 
 // SPRING BOOT
 
+
 tasks {
+    bootJar {
+        dependsOn(asciidoctor)
+        from(asciidoctor) {
+            into("BOOT-INF/classes/static/docs")
+        }
+    }
     bootBuildImage {
         imageName =  buildString {
             append("showcase-blog/")
@@ -76,6 +88,14 @@ tasks {
             }
         }
     }
+}
+
+// ASCIIDOC
+
+tasks.asciidoctor {
+    inputs.dir(project.extra["snippetsDir"]!!)
+    dependsOn(tasks.test)
+    attributes(mapOf("snippets" to project.extra["snippetsDir"]!!))
 }
 
 // DETEKT

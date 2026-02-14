@@ -21,10 +21,15 @@ import io.mockk.verify
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.restdocs.test.autoconfigure.AutoConfigureRestDocs
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest
 import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
+import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest
+import org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse
+import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.json.JsonCompareMode.LENIENT
 import org.springframework.test.json.JsonCompareMode.STRICT
@@ -40,6 +45,7 @@ import java.util.UUID
 @ActiveProfiles("test")
 @WebMvcTest(BlogPostController::class)
 @Import(SecurityConfiguration::class)
+@AutoConfigureRestDocs
 @MockkBean(
     types = [
         CreateBlogPostFunction::class,
@@ -150,6 +156,17 @@ class BlogPostControllerTests(
                         compareMode = STRICT
                     )
                 }
+            }.andDo {
+                handle(
+                    document(
+                        "create-blog-post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        blogPostCreationRequestFields(),
+                        blogPostResponseFields(),
+                        authorLinks()
+                    )
+                )
             }
         }
     }
@@ -214,6 +231,18 @@ class BlogPostControllerTests(
                         compareMode = STRICT
                     )
                 }
+            }.andDo {
+                handle(
+                    document(
+                        "update-blog-post",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        blogPostUidPathParameters(),
+                        blogPostUpdateRequestFields(),
+                        blogPostResponseFields(),
+                        authorLinks()
+                    )
+                )
             }
         }
     }
@@ -238,6 +267,13 @@ class BlogPostControllerTests(
                 with(jwtWithAuthorRole())
             }.andExpect {
                 status { isNoContent() }
+            }.andDo {
+                handle(
+                    document(
+                        "delete-blog-post",
+                        blogPostUidPathParameters()
+                    )
+                )
             }
 
             verify { deleteBlogPost(any(), blogPostUid1) }
@@ -284,6 +320,16 @@ class BlogPostControllerTests(
                         compareMode = STRICT
                     )
                 }
+            }.andDo {
+                handle(
+                    document(
+                        "get-blog-post",
+                        preprocessResponse(prettyPrint()),
+                        blogPostUidPathParameters(),
+                        blogPostResponseFields(),
+                        userLinks()
+                    )
+                )
             }
         }
 
@@ -376,6 +422,15 @@ class BlogPostControllerTests(
                         compareMode = STRICT
                     )
                 }
+            }.andDo {
+                handle(
+                    document(
+                        "get-blog-posts",
+                        preprocessResponse(prettyPrint()),
+                        blogPostPageQueryParameters(),
+                        pagedBlogPostResponseFields()
+                    )
+                )
             }
         }
 
