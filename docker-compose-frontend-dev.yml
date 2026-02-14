@@ -45,7 +45,7 @@ services:
       - OAUTH2_PROXY_REDIRECT_URL=http://localhost:4180/oauth2/callback
       - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://redis:6379
       - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
-      - OAUTH2_PROXY_UPSTREAMS=http://backend:8080/api/,http://host.docker.internal:4200/
+      - OAUTH2_PROXY_UPSTREAMS=http://backend:8080/api/,http://backend:8080/docs/,http://host.docker.internal:4200/
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:

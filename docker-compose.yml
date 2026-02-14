@@ -49,7 +49,7 @@ services:
       - OAUTH2_PROXY_REDIRECT_URL=http://localhost:4180/oauth2/callback
       - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://redis:6379
       - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
-      - OAUTH2_PROXY_UPSTREAMS=http://backend:8080/api/,http://frontend:80/
+      - OAUTH2_PROXY_UPSTREAMS=http://backend:8080/api/,http://backend:8080/docs/,http://frontend:80/
     depends_on:
       - auth-server
       - backend
