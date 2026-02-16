@@ -1,7 +1,11 @@
 package application.config
 
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest.toAnyEndpoint
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.Ordered.HIGHEST_PRECEDENCE
+import org.springframework.core.Ordered.LOWEST_PRECEDENCE
+import org.springframework.core.annotation.Order
 import org.springframework.core.convert.converter.Converter
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -20,7 +24,25 @@ import org.springframework.security.web.SecurityFilterChain
 class SecurityConfiguration {
 
     @Bean
-    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    @Order(HIGHEST_PRECEDENCE)
+    fun actuatorSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+            securityMatcher(toAnyEndpoint())
+            cors { disable() }
+            csrf { disable() }
+            authorizeHttpRequests {
+                authorize(anyRequest, permitAll)
+            }
+            sessionManagement {
+                sessionCreationPolicy = STATELESS
+            }
+        }
+        return http.build()
+    }
+
+    @Bean
+    @Order(LOWEST_PRECEDENCE)
+    fun generalSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             cors { disable() }
             csrf { disable() }
