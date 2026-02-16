@@ -12,7 +12,8 @@ services:
   backend:
     image: showcase-blog/backend:latest
     ports:
-      - "8080:8080"
+      - "8080:8080" # api
+      - "8081:8081" # actuator
     environment:
       - ISSUER=http://auth-server:9000
       - JWKS_URI=http://auth-server:9000/oauth2/jwks

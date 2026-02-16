@@ -3,6 +3,30 @@ logging:
     root: INFO
     application: DEBUG
 
+management:
+  endpoint:
+    info:
+      access: read_only
+    health:
+      access: read_only
+    metrics:
+      access: read_only
+    prometheus:
+      access: read_only
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - metrics
+          - prometheus
+    access:
+      default: none
+      max-permitted: read_only
+  server:
+    port: 8081
+
 server:
   port: 8080
 
