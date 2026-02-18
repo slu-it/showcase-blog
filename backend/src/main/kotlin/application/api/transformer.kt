@@ -1,10 +1,10 @@
 package application.api
 
-import application.business.BlogPost
-import application.business.BlogPostData
-import application.business.MutableBlogPost
-import application.business.PagedResult
-import application.business.User
+import application.business.model.BlogPost
+import application.business.model.BlogPostData
+import application.business.model.MutableBlogPost
+import application.business.model.PagedResult
+import application.business.model.User
 import application.config.isAdmin
 import application.config.isAuthor
 import application.config.isUser

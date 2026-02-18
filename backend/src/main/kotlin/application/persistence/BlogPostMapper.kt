@@ -1,8 +1,8 @@
 package application.persistence
 
-import application.business.BlogPost
-import application.business.BlogPostData
-import application.business.BlogPostMetadata
+import application.business.model.BlogPost
+import application.business.model.BlogPostData
+import application.business.model.BlogPostMetadata
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 import java.util.UUID

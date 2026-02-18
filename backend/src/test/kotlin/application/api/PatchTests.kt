@@ -1,7 +1,7 @@
 package application.api
 
-import application.business.MutableBlogPost
-import application.business.MutableBlogPostData
+import application.business.model.MutableBlogPost
+import application.business.model.MutableBlogPostData
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.throwable.shouldHaveMessage

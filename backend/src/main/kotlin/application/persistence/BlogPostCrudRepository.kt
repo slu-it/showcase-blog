@@ -1,9 +1,9 @@
 package application.persistence
 
-import application.business.BlogPost
-import application.business.BlogPostData
-import application.business.MutableBlogPost
-import application.business.User
+import application.business.model.BlogPost
+import application.business.model.BlogPostData
+import application.business.model.MutableBlogPost
+import application.business.model.User
 import org.springframework.jdbc.core.simple.JdbcClient
 import org.springframework.stereotype.Repository
 import org.springframework.util.IdGenerator

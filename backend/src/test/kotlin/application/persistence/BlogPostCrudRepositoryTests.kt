@@ -4,8 +4,8 @@ import application.TestData.blogPostData1
 import application.TestData.blogPostData2
 import application.TestData.defaultUser
 import application.TestData.differentUser
-import application.business.BlogPost
-import application.business.BlogPostMetadata
+import application.business.model.BlogPost
+import application.business.model.BlogPostMetadata
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe

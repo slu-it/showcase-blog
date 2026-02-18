@@ -1,5 +1,7 @@
 package application.business
 
+import application.business.model.BlogPostData
+import application.business.model.User
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import tools.jackson.module.kotlin.jacksonObjectMapper

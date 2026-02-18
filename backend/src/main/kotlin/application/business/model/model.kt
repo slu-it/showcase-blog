@@ -1,6 +1,6 @@
 @file:Suppress("MatchingDeclarationName")
 
-package application.business
+package application.business.model
 
 import java.time.Instant
 import java.util.UUID

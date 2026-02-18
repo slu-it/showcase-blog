@@ -1,5 +1,9 @@
 package application.business
 
+import application.business.model.BlogPost
+import application.business.model.PageQuery
+import application.business.model.PagedResult
+import application.business.model.User
 import application.persistence.BlogPostSearchRepository
 import org.springframework.stereotype.Component
 

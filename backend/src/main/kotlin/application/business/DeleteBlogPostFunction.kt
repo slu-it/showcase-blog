@@ -1,5 +1,6 @@
 package application.business
 
+import application.business.model.User
 import application.persistence.BlogPostCrudRepository
 import org.springframework.stereotype.Component
 import java.util.UUID

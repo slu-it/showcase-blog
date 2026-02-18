@@ -3,6 +3,7 @@ package application.business
 import application.TestData.blogPostData1
 import application.TestData.blogPostMetadata1
 import application.TestData.defaultUser
+import application.business.model.BlogPost
 import application.persistence.BlogPostCrudRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.every

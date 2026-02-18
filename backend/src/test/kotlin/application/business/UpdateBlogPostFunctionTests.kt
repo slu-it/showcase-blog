@@ -1,6 +1,8 @@
 package application.business
 
 import application.TestData.defaultUser
+import application.business.model.BlogPost
+import application.business.model.MutableBlogPost
 import application.persistence.BlogPostCrudRepository
 import io.kotest.matchers.shouldBe
 import io.mockk.every
