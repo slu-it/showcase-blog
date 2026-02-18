@@ -1,11 +1,11 @@
 package application.persistence
 
 import application.TestData.defaultUser
-import application.business.BlogPost
-import application.business.BlogPostData
-import application.business.PageQuery
-import application.business.PagedResult
-import application.business.PagedResult.Page
+import application.business.model.BlogPost
+import application.business.model.BlogPostData
+import application.business.model.PageQuery
+import application.business.model.PagedResult
+import application.business.model.PagedResult.Page
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.matchers.shouldBe
 import io.mockk.every

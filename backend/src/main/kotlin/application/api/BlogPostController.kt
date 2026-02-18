@@ -4,7 +4,7 @@ import application.business.CreateBlogPostFunction
 import application.business.DeleteBlogPostFunction
 import application.business.GetBlogPostFunction
 import application.business.GetBlogPostsFunction
-import application.business.PageQuery
+import application.business.model.PageQuery
 import application.business.UpdateBlogPostFunction
 import application.config.NeedsAuthorRole
 import application.config.NeedsUserRole

@@ -1,8 +1,8 @@
 package application
 
-import application.business.BlogPostData
-import application.business.BlogPostMetadata
-import application.business.User
+import application.business.model.BlogPostData
+import application.business.model.BlogPostMetadata
+import application.business.model.User
 import java.time.Instant
 
 object TestData {

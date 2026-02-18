@@ -1,9 +1,9 @@
 package application.persistence
 
-import application.business.BlogPost
-import application.business.PageQuery
-import application.business.PagedResult
-import application.business.PagedResult.Page
+import application.business.model.BlogPost
+import application.business.model.PageQuery
+import application.business.model.PagedResult
+import application.business.model.PagedResult.Page
 import org.springframework.jdbc.core.simple.JdbcClient
 import org.springframework.stereotype.Repository
 import java.time.Clock
