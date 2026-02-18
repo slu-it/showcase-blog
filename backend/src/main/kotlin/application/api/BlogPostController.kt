@@ -4,8 +4,10 @@ import application.business.CreateBlogPostFunction
 import application.business.DeleteBlogPostFunction
 import application.business.GetBlogPostFunction
 import application.business.GetBlogPostsFunction
-import application.business.model.PageQuery
 import application.business.UpdateBlogPostFunction
+import application.business.model.DEFAULT_PAGE_NUMBER
+import application.business.model.DEFAULT_PAGE_SIZE
+import application.business.model.PageQuery
 import application.config.NeedsAuthorRole
 import application.config.NeedsUserRole
 import org.springframework.hateoas.PagedModel
@@ -26,9 +28,6 @@ import org.springframework.web.bind.annotation.RestController
 import tools.jackson.databind.JsonNode
 import java.time.Clock
 import java.util.UUID
-
-const val DEFAULT_PAGE_NUMBER = "1"
-const val DEFAULT_PAGE_SIZE = "25"
 
 @RestController
 @RequestMapping("/api/blog-posts")
@@ -96,8 +95,8 @@ class BlogPostController(
     @GetMapping
     fun getPage(
         auth: JwtAuthenticationToken,
-        @RequestParam("pageNumber", defaultValue = DEFAULT_PAGE_NUMBER) pageNumber: Int,
-        @RequestParam("pageSize", defaultValue = DEFAULT_PAGE_SIZE) pageSize: Int,
+        @RequestParam("pageNumber", defaultValue = "$DEFAULT_PAGE_NUMBER") pageNumber: Int,
+        @RequestParam("pageSize", defaultValue = "$DEFAULT_PAGE_SIZE") pageSize: Int,
     ): PagedModel<BlogPostRepresentation> {
         val user = user(auth)
         val page = getBlogPosts(user, PageQuery(pageNumber, pageSize))

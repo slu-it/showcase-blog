@@ -1,6 +1,8 @@
 package application.api
 
 import application.TestData.defaultUser
+import application.business.model.DEFAULT_PAGE_NUMBER
+import application.business.model.DEFAULT_PAGE_SIZE
 import application.config.CustomJwtGrantedAuthoritiesConverter
 import org.intellij.lang.annotations.Language
 import org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel
