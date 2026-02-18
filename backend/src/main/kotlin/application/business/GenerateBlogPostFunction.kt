@@ -21,6 +21,7 @@ class GenerateBlogPostFunction(
 
     private val blogPostData = ClassPathResource("/blog-posts/generated.json")
         .let { jacksonObjectMapper().readValue<List<GeneratedData>>(it.contentAsByteArray) }
+    internal val blogPostPoolSize = blogPostData.size
 
     @Suppress("MagicNumber")
     operator fun invoke(user: User, amount: Int) {
