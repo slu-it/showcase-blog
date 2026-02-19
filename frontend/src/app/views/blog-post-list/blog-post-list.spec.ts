@@ -78,7 +78,7 @@ describe('BlogPostList', () => {
     it('should load page 1 on init', async () => {
       await setupWithUser(false);
 
-      expect(backend.getBlogPostsPage).toHaveBeenCalledWith(1, 10);
+      expect(backend.getBlogPostsPage).toHaveBeenCalledWith(1, 5);
     });
   });
 
