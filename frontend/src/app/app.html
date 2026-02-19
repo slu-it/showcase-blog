@@ -1,17 +1,19 @@
-<nav>
-  <a routerLink="/">{{ 'nav.blogPosts' | translate }}</a>
-  @if (userCanCreateBlogPosts) {
-    | <a routerLink="/create">{{ 'nav.create' | translate }}</a>
-  }
-</nav>
-<div class="language-switcher">
-  <select id="language" [value]="currentLang" (change)="switchLanguage($any($event.target).value)">
-    <option value="de">{{ 'language.de' | translate }}</option>
-    <option value="en">{{ 'language.en' | translate }}</option>
-    <option value="es">{{ 'language.es' | translate }}</option>
-    <option value="sv">{{ 'language.sv' | translate }}</option>
-  </select>
-</div>
+<header class="app-header">
+  <nav class="app-nav">
+    <a routerLink="/">{{ 'nav.blogPosts' | translate }}</a>
+    @if (userCanCreateBlogPosts) {
+      <a routerLink="/create">{{ 'nav.create' | translate }}</a>
+    }
+  </nav>
+  <div class="language-switcher">
+    <select id="language" [value]="currentLang" (change)="switchLanguage($any($event.target).value)">
+      <option value="de">{{ 'language.de' | translate }}</option>
+      <option value="en">{{ 'language.en' | translate }}</option>
+      <option value="es">{{ 'language.es' | translate }}</option>
+      <option value="sv">{{ 'language.sv' | translate }}</option>
+    </select>
+  </div>
+</header>
 <div class="view-content">
   <router-outlet/>
 </div>

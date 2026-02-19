@@ -9,7 +9,15 @@ import {TestDataGenerator} from '../../common/test-data-generator/test-data-gene
 import {ContextService} from '../../common/context/context.service';
 import {TranslatePipe} from '@ngx-translate/core';
 
-const dummyPageInfo = {number: 1, size: 10, totalPages: 1, totalElements: 0};
+const DEFAULT_PAGE_NUMBER = 1;
+const DEFAULT_PAGE_SIZE = 5;
+
+const DUMMY_PAGE_INFO: PageInfo = {
+  number: DEFAULT_PAGE_NUMBER,
+  size: DEFAULT_PAGE_SIZE,
+  totalPages: 1,
+  totalElements: 0
+};
 
 @Component({
   selector: 'app-v-blog-post-list',
@@ -27,15 +35,15 @@ export class BlogPostList implements OnInit {
   private readonly _blogPosts = signal<BlogPost[]>([]);
   protected readonly blogPosts = this._blogPosts.asReadonly();
 
-  private readonly _pageInfo = signal<PageInfo>(dummyPageInfo);
+  private readonly _pageInfo = signal<PageInfo>(DUMMY_PAGE_INFO);
   protected readonly pageInfo = this._pageInfo.asReadonly();
 
   ngOnInit() {
     this.route.queryParamMap
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(params => {
-        const pageNumber = Number(params.get('pageNumber')) || 1;
-        const pageSize = Number(params.get('pageSize')) || 10;
+        const pageNumber = Number(params.get('pageNumber')) || DEFAULT_PAGE_NUMBER;
+        const pageSize = Number(params.get('pageSize')) || DEFAULT_PAGE_SIZE;
         this.loadPage(pageNumber, pageSize);
       });
   }
