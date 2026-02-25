@@ -3,6 +3,7 @@ import {RouterLink, RouterOutlet} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {NotificationsContainer} from './common/notifications/notifications-container';
 import {ContextService} from './common/context/context.service';
+import {ConfigurationStore, Language} from './app.state';
 
 @Component({
   selector: 'app-root',
@@ -11,33 +12,19 @@ import {ContextService} from './common/context/context.service';
   styleUrl: './app.scss'
 })
 export class App {
-  private static readonly SUPPORTED_LANGUAGES = /^(en|de|es|sv)$/;
-  private static readonly LANGUAGE_STORAGE_KEY = 'lang';
-
   private readonly translate = inject(TranslateService);
   private readonly context = inject(ContextService);
-
-  currentLang: string;
+  readonly configuration = inject(ConfigurationStore);
 
   constructor() {
     this.translate.setFallbackLang('en');
-    const stored = localStorage.getItem(App.LANGUAGE_STORAGE_KEY);
-    if (stored?.match(App.SUPPORTED_LANGUAGES)) {
-      this.currentLang = stored;
-    } else {
-      const browserLang = this.translate.getBrowserLang();
-      this.currentLang = browserLang?.match(App.SUPPORTED_LANGUAGES) ? browserLang : 'en';
-    }
-    this.translate.use(this.currentLang);
   }
 
   get userCanCreateBlogPosts(): boolean {
     return this.context.user().isAuthor;
   }
 
-  switchLanguage(lang: string) {
-    this.currentLang = lang;
-    localStorage.setItem(App.LANGUAGE_STORAGE_KEY, lang);
-    this.translate.use(lang);
+  switchLanguage(lang: Language) {
+    this.configuration.switchLanguage(lang)
   }
 }
