@@ -2,12 +2,13 @@ import {Component, inject} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {NotificationsContainer} from './common/notifications/notifications-container';
+import {LoadingSpinner} from './common/loading/loading-spinner';
 import {ContextService} from './common/context/context.service';
 import {ConfigurationStore, Language} from './app.state';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, TranslateModule, NotificationsContainer],
+  imports: [RouterOutlet, RouterLink, TranslateModule, NotificationsContainer, LoadingSpinner],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
