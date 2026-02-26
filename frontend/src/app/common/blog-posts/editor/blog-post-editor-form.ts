@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, input, output, viewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, input, output, signal, viewChild} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
 import {BlogPostDto} from "../blog-posts.model";
@@ -25,7 +25,7 @@ export class BlogPostEditorForm implements AfterViewInit {
     content: new FormControl(''),
     publicationTime: new FormControl(toDateTimePickerValueFormat(new Date()), Validators.required),
   });
-  protected contentTab: 'write' | 'preview' = 'write';
+  protected contentTab = signal<'write' | 'preview'>('write');
 
   ngAfterViewInit(): void {
     this.titleInput().nativeElement.focus();

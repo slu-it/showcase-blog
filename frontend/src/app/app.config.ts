@@ -6,11 +6,11 @@ import {
   provideZoneChangeDetection
 } from '@angular/core';
 import {provideHttpClient} from '@angular/common/http';
-import {provideRouter, TitleStrategy} from '@angular/router';
+import {provideRouter, TitleStrategy, withComponentInputBinding} from '@angular/router';
 import {provideTranslateService} from '@ngx-translate/core';
 import {provideTranslateHttpLoader} from '@ngx-translate/http-loader';
 
-import {provideMarkdown, MARKED_OPTIONS, MarkedRenderer} from 'ngx-markdown';
+import {MARKED_OPTIONS, MarkedRenderer, provideMarkdown} from 'ngx-markdown';
 import {Tokens} from 'marked';
 
 import {routes} from './app.routes';
@@ -21,7 +21,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     provideHttpClient(),
     provideTranslateService({
       fallbackLang: 'en'
